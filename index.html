@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Subspace.money — Helping you manage your money better</title>
+  <meta name="description" content="No app made finance management easy until Subspace.money came along. It's designed with one clear goal: save money." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,800;0,9..144,900;1,9..144,700;1,9..144,800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Reset ───────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: #FBF4E9;
+      color: #1A1A1A;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── Tokens ──────────────────────────────────────────── */
+    :root {
+      --cream:     #FBF4E9;
+      --cream-2:   #F5ECD8;
+      --green:     #1B4332;
+      --green-mid: #2D6A4F;
+      --lime:      #C8F04A;
+      --lime-dark: #AFDB2E;
+      --black:     #1A1A1A;
+      --gray:      #666;
+      --gray-2:    #888;
+      --white:     #FFFFFF;
+      --border:    rgba(0,0,0,0.09);
+    }
+
+    /* ── NAV ─────────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(251,244,233,0.90);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1140px; margin: 0 auto;
+      padding: 0 36px; height: 66px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: 'Fraunces', serif;
+      font-size: 18px; font-weight: 700;
+      color: var(--black); text-decoration: none;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .nav-logo-icon {
+      width: 28px; height: 28px;
+      background: var(--green); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .nav-links {
+      display: flex; align-items: center; gap: 32px; list-style: none;
+    }
+    .nav-links a {
+      font-size: 14.5px; font-weight: 500;
+      color: #333; text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--green); }
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+    .btn-nav-login {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14px; font-weight: 600;
+      color: var(--black); background: transparent;
+      border: 1.5px solid rgba(0,0,0,0.18);
+      border-radius: 999px; padding: 8px 22px;
+      cursor: pointer; text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-nav-login:hover { background: var(--black); color: #fff; }
+    .btn-nav-cta {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14px; font-weight: 700;
+      color: var(--black); background: var(--lime);
+      border: none; border-radius: 999px;
+      padding: 9px 24px; cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-nav-cta:hover { background: var(--lime-dark); transform: scale(1.03); }
+
+    /* ── HERO ────────────────────────────────────────────── */
+    .hero {
+      max-width: 1140px; margin: 0 auto;
+      padding: 80px 36px 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+      min-height: calc(100vh - 66px);
+    }
+
+    /* Left column */
+    .hero-left {}
+    .hero-h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(46px, 5.8vw, 72px);
+      font-weight: 800;
+      line-height: 1.07;
+      letter-spacing: -0.03em;
+      color: var(--black);
+      margin-bottom: 20px;
+    }
+    .hero-h1 .highlight {
+      background: var(--lime);
+      padding: 0 6px 2px 4px;
+      border-radius: 6px;
+      display: inline;
+    }
+    .hero-sub {
+      font-size: 16.5px;
+      color: var(--gray);
+      line-height: 1.65;
+      max-width: 420px;
+      margin-bottom: 36px;
+      font-weight: 400;
+    }
+    .btn-cta-main {
+      display: inline-flex; align-items: center;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 16px; font-weight: 700;
+      color: var(--black); background: var(--lime);
+      border: none; border-radius: 999px;
+      padding: 16px 40px;
+      cursor: pointer; text-decoration: none;
+      transition: background 0.2s, transform 0.18s;
+      box-shadow: 0 4px 16px rgba(200,240,74,0.35);
+      margin-bottom: 36px;
+    }
+    .btn-cta-main:hover { background: var(--lime-dark); transform: scale(1.03); }
+
+    /* Social proof */
+    .social-proof {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .avatars {
+      display: flex;
+    }
+    .avatars span {
+      width: 34px; height: 34px; border-radius: 50%;
+      border: 2.5px solid var(--cream);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; color: #fff;
+      margin-left: -9px;
+      flex-shrink: 0;
+    }
+    .avatars span:first-child { margin-left: 0; }
+    .av1{background:#3D6B58;} .av2{background:#2E8B57;} .av3{background:#5C7A6E;}
+    .av4{background:#4A9070;} .av5{background:#1B4332;}
+    .proof-info {}
+    .stars { color: #E8A020; font-size: 14px; letter-spacing: 2px; margin-bottom: 2px; }
+    .proof-text { font-size: 13px; color: var(--gray); font-weight: 500; }
+
+    /* Right column — phone mockup */
+    .hero-right {
+      display: flex; justify-content: center; align-items: center;
+      position: relative;
+    }
+    .phone-scene {
+      position: relative;
+      animation: floatScene 5s ease-in-out infinite;
+    }
+    @keyframes floatScene {
+      0%,100%{ transform: translateY(0); }
+      50%{ transform: translateY(-14px); }
+    }
+
+    /* Phone frame */
+    .phone-frame {
+      width: 310px; height: 610px;
+      background: #111;
+      border-radius: 50px;
+      padding: 14px;
+      box-shadow:
+        0 60px 120px rgba(0,0,0,0.25),
+        0 20px 40px rgba(0,0,0,0.12),
+        inset 0 0 0 1px rgba(255,255,255,0.08);
+      position: relative;
+      z-index: 2;
+    }
+    .phone-notch {
+      width: 90px; height: 26px;
+      background: #111;
+      border-radius: 999px;
+      position: absolute;
+      top: 14px; left: 50%; transform: translateX(-50%);
+      z-index: 10;
+    }
+    .phone-screen {
+      width: 100%; height: 100%;
+      background: #fff;
+      border-radius: 38px;
+      overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+
+    /* Phone header (dark green) */
+    .ph-header {
+      background: var(--green);
+      padding: 40px 20px 20px;
+      flex-shrink: 0;
+    }
+    .ph-header-top {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 12px;
+    }
+    .ph-dash-label {
+      font-size: 11px; font-weight: 700;
+      color: rgba(255,255,255,0.6);
+      letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .ph-header-icon {
+      width: 28px; height: 28px; border-radius: 8px;
+      background: rgba(255,255,255,0.12);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .ph-bal-label {
+      font-size: 9.5px; font-weight: 700;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+    .ph-balance {
+      font-family: 'Fraunces', serif;
+      font-size: 32px; font-weight: 700;
+      color: #fff; letter-spacing: -0.02em;
+      line-height: 1; margin-bottom: 10px;
+    }
+    .ph-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(200,240,74,0.2);
+      border: 1px solid rgba(200,240,74,0.3);
+      border-radius: 999px;
+      padding: 4px 12px;
+      font-size: 10px; font-weight: 700;
+      color: #C8F04A;
+    }
+
+    /* Phone body */
+    .ph-body {
+      flex: 1; overflow: hidden;
+      padding: 16px;
+      display: flex; flex-direction: column; gap: 11px;
+      background: #F8F4EF;
+    }
+
+    /* Category cards row */
+    .ph-cats {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 8px;
+    }
+    .ph-cat {
+      background: #fff;
+      border-radius: 14px;
+      padding: 11px 10px;
+      text-align: left;
+    }
+    .ph-cat-icon {
+      width: 26px; height: 26px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 7px;
+    }
+    .ic-green  { background: rgba(27,67,50,0.1);  }
+    .ic-yellow { background: rgba(248,196,60,0.15); }
+    .ic-blue   { background: rgba(80,160,220,0.12); }
+    .ph-cat-name  { font-size: 9.5px; color: #888; font-weight: 600; margin-bottom: 3px; }
+    .ph-cat-amt   { font-size: 12px; font-weight: 700; color: #1A1A1A; }
+    .ph-cat-pct   { font-size: 9px; color: #888; font-weight: 500; }
+
+    /* Budget card */
+    .ph-budget {
+      background: var(--lime);
+      border-radius: 14px;
+      padding: 13px 14px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .ph-budget-label  { font-size: 10px; font-weight: 700; color: var(--black); margin-bottom: 3px; }
+    .ph-budget-sub    { font-size: 9px; color: rgba(0,0,0,0.5); font-weight: 500; }
+    .ph-budget-amt    { font-family: 'Fraunces', serif; font-size: 15px; font-weight: 700; color: var(--black); }
+
+    /* Goal card */
+    .ph-goal {
+      background: #fff;
+      border-radius: 14px;
+      padding: 13px 14px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .ph-goal-title { font-size: 10.5px; font-weight: 700; color: #1A1A1A; margin-bottom: 3px; }
+    .ph-goal-sub   { font-size: 9px; color: #888; }
+    .ph-goal-btn {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--green);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* Budget bottom */
+    .ph-budget-2 {
+      background: #fff;
+      border-radius: 14px;
+      padding: 13px 14px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .ph-budget-2-label { font-size: 10px; font-weight: 700; color: #1A1A1A; margin-bottom: 2px; }
+    .ph-budget-2-sub   { font-size: 9px; color: #888; }
+    .ph-budget-2-amt   { font-family: 'Fraunces', serif; font-size: 14px; font-weight: 700; color: var(--black); }
+
+    /* ── Decorative elements ──────────────────────────────── */
+    .deco {
+      position: absolute;
+      pointer-events: none;
+      user-select: none;
+      animation: floatDeco 6s ease-in-out infinite;
+    }
+    @keyframes floatDeco {
+      0%,100%{ transform: translateY(0) rotate(0deg); }
+      33%{ transform: translateY(-10px) rotate(5deg); }
+      66%{ transform: translateY(6px) rotate(-4deg); }
+    }
+    .deco-piggy { top: 60px; right: -80px; animation-delay: 0.5s; }
+    .deco-coin  { bottom: 120px; right: -70px; animation-delay: 1.2s; }
+    .deco-star  { top: 280px; left: -60px; animation-delay: 0.3s; }
+
+    /* Piggy bank SVG illustration */
+    .piggy-svg { width: 80px; height: 80px; }
+    .coin-svg  { width: 70px; height: 70px; }
+    .star-svg  { width: 44px; height: 44px; }
+
+    /* ── WHAT section ─────────────────────────────────────── */
+    .what-section {
+      max-width: 1140px; margin: 0 auto 0;
+      padding: 0 36px 0;
+    }
+    .what-card {
+      background: var(--green);
+      border-radius: 28px;
+      padding: 72px 56px;
+      text-align: center;
+    }
+    .what-eyebrow {
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--lime); margin-bottom: 20px;
+    }
+    .what-h2 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(34px, 4vw, 50px);
+      font-weight: 700; color: #fff;
+      letter-spacing: -0.025em;
+      line-height: 1.1; margin-bottom: 28px;
+    }
+    .what-body {
+      font-size: 17px; color: rgba(255,255,255,0.68);
+      line-height: 1.78; max-width: 640px;
+      margin: 0 auto; font-weight: 400;
+    }
+    .what-body strong { color: rgba(255,255,255,0.92); font-weight: 600; }
+
+    /* ── WHY section ──────────────────────────────────────── */
+    .why-section {
+      max-width: 1140px; margin: 0 auto;
+      padding: 100px 36px;
+    }
+    .why-header {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 40px; align-items: start; margin-bottom: 60px;
+    }
+    .why-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--lime); border-radius: 999px;
+      padding: 7px 18px; font-size: 13px; font-weight: 700;
+      color: var(--black); margin-bottom: 22px;
+    }
+    .why-h2 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(34px, 4vw, 48px);
+      font-weight: 800; color: var(--black);
+      letter-spacing: -0.025em; line-height: 1.08;
+    }
+    .why-desc { font-size: 16px; color: var(--gray); line-height: 1.7; }
+    .why-items { display: flex; flex-direction: column; }
+    .why-item {
+      padding: 28px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.07);
+    }
+    .why-item:last-child { border: none; }
+    .why-num {
+      font-size: 10.5px; font-weight: 800;
+      color: var(--green); letter-spacing: 0.12em;
+      text-transform: uppercase; margin-bottom: 9px;
+    }
+    .why-item h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 20px; font-weight: 700;
+      color: var(--black); margin-bottom: 7px;
+      letter-spacing: -0.01em;
+    }
+    .why-item p { font-size: 15px; color: var(--gray); line-height: 1.65; }
+
+    /* ── FEATURES section ─────────────────────────────────── */
+    .features-section {
+      max-width: 1140px; margin: 0 auto;
+      padding: 0 36px 100px;
+    }
+    .features-eyebrow {
+      text-align: center;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--green); margin-bottom: 14px;
+    }
+    .features-h2 {
+      text-align: center;
+      font-family: 'Fraunces', serif;
+      font-size: clamp(30px, 3.5vw, 44px);
+      font-weight: 800; color: var(--black);
+      letter-spacing: -0.025em; margin-bottom: 52px;
+    }
+    .feat-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;
+    }
+    .feat-card {
+      background: #fff;
+      border-radius: 24px;
+      padding: 36px;
+      border: 1.5px solid rgba(0,0,0,0.06);
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+    .feat-card:hover {
+      box-shadow: 0 12px 40px rgba(0,0,0,0.09);
+      transform: translateY(-3px);
+    }
+    .feat-icon-wrap {
+      width: 46px; height: 46px;
+      background: var(--lime);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 18px;
+    }
+    .feat-title {
+      font-family: 'Fraunces', serif;
+      font-size: 20px; font-weight: 700;
+      color: var(--black); margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+    .feat-desc { font-size: 15px; color: var(--gray); line-height: 1.65; }
+
+    /* ── PRICING section ──────────────────────────────────── */
+    .pricing-section {
+      background: var(--cream-2);
+      padding: 100px 36px;
+    }
+    .pricing-inner { max-width: 780px; margin: 0 auto; }
+    .pricing-eyebrow {
+      text-align: center;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--green); margin-bottom: 14px;
+    }
+    .pricing-h2 {
+      text-align: center;
+      font-family: 'Fraunces', serif;
+      font-size: clamp(28px, 3.4vw, 42px);
+      font-weight: 800; color: var(--black);
+      letter-spacing: -0.025em; margin-bottom: 12px;
+    }
+    .pricing-sub {
+      text-align: center;
+      font-size: 16px; color: var(--gray);
+      margin-bottom: 52px;
+    }
+    .pricing-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 18px;
+    }
+    .price-card {
+      border-radius: 24px; padding: 38px;
+      position: relative; overflow: hidden;
+    }
+    .pc-free { background: #fff; border: 1.5px solid rgba(0,0,0,0.07); }
+    .pc-pro  { background: var(--green); }
+    .price-badge {
+      position: absolute; top: 18px; right: 18px;
+      background: var(--lime); color: var(--black);
+      font-size: 10px; font-weight: 800; border-radius: 999px;
+      padding: 4px 12px; letter-spacing: 0.04em;
+    }
+    .price-plan {
+      font-size: 11px; font-weight: 800;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .pp-free { color: var(--gray); }
+    .pp-pro  { color: var(--lime); }
+    .price-amt {
+      font-family: 'Fraunces', serif;
+      font-size: 48px; font-weight: 700;
+      letter-spacing: -0.04em; line-height: 1;
+      margin-bottom: 4px;
+    }
+    .pa-free { color: var(--black); }
+    .pa-pro  { color: #fff; }
+    .price-per { font-size: 13px; font-weight: 500; margin-bottom: 28px; }
+    .per-free { color: var(--gray); }
+    .per-pro  { color: rgba(255,255,255,0.45); }
+    .price-feats { list-style: none; margin-bottom: 32px; display: flex; flex-direction: column; gap: 12px; }
+    .price-feats li {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 14px;
+    }
+    .pf-free li { color: #333; }
+    .pf-pro  li { color: rgba(255,255,255,0.82); }
+    .pf-check {
+      width: 18px; height: 18px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .pf-check-free { background: rgba(27,67,50,0.1); }
+    .pf-check-pro  { background: rgba(200,240,74,0.18); }
+    .btn-price-free {
+      display: block; width: 100%; text-align: center;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14px; font-weight: 700;
+      color: var(--black); background: transparent;
+      border: 1.5px solid rgba(0,0,0,0.18);
+      border-radius: 999px; padding: 14px;
+      text-decoration: none; transition: all 0.2s;
+    }
+    .btn-price-free:hover { background: var(--black); color: #fff; }
+    .btn-price-pro {
+      display: block; width: 100%; text-align: center;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14px; font-weight: 700;
+      color: var(--black); background: var(--lime);
+      border: none; border-radius: 999px;
+      padding: 14px; text-decoration: none;
+      transition: background 0.2s, transform 0.18s;
+    }
+    .btn-price-pro:hover { background: var(--lime-dark); transform: scale(1.02); }
+
+    /* ── TESTIMONIALS ─────────────────────────────────────── */
+    .test-section {
+      max-width: 1140px; margin: 0 auto;
+      padding: 100px 36px;
+    }
+    .test-eyebrow {
+      text-align: center;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--green); margin-bottom: 14px;
+    }
+    .test-h2 {
+      text-align: center;
+      font-family: 'Fraunces', serif;
+      font-size: clamp(28px, 3.2vw, 40px);
+      font-weight: 800; color: var(--black);
+      letter-spacing: -0.025em; margin-bottom: 52px;
+    }
+    .test-grid {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 18px;
+    }
+    .test-card {
+      background: #fff;
+      border: 1.5px solid rgba(0,0,0,0.07);
+      border-radius: 22px; padding: 30px;
+      display: flex; flex-direction: column; gap: 20px;
+      transition: box-shadow 0.3s;
+    }
+    .test-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.08); }
+    .test-stars { color: #E8A020; font-size: 15px; letter-spacing: 2px; }
+    .test-quote {
+      font-family: 'Fraunces', serif;
+      font-size: 17px; font-weight: 400; font-style: italic;
+      color: var(--black); line-height: 1.6; flex: 1;
+    }
+    .test-author { display: flex; align-items: center; gap: 11px; }
+    .test-av {
+      width: 40px; height: 40px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700; color: #fff; flex-shrink: 0;
+    }
+    .test-name { font-size: 14px; font-weight: 700; color: var(--black); }
+    .test-role { font-size: 12px; color: var(--gray); margin-top: 1px; }
+
+    /* ── CTA BAND ─────────────────────────────────────────── */
+    .cta-band {
+      background: var(--lime);
+      padding: 80px 36px;
+      text-align: center;
+    }
+    .cta-band-h2 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 800; color: var(--black);
+      letter-spacing: -0.03em; margin-bottom: 12px;
+    }
+    .cta-band-sub {
+      font-size: 17px; color: rgba(0,0,0,0.6);
+      margin-bottom: 36px;
+    }
+    .btn-cta-band {
+      display: inline-flex;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 16px; font-weight: 700;
+      color: #fff; background: var(--green);
+      border: none; border-radius: 999px;
+      padding: 17px 44px; cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.18s;
+    }
+    .btn-cta-band:hover { background: #0e3326; transform: scale(1.03); }
+
+    /* ── FOOTER ──────────────────────────────────────────── */
+    footer {
+      background: var(--green); padding: 64px 36px 36px;
+    }
+    .footer-inner { max-width: 1140px; margin: 0 auto; }
+    .footer-top {
+      display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
+      gap: 40px; margin-bottom: 52px;
+      padding-bottom: 52px;
+      border-bottom: 1px solid rgba(255,255,255,0.09);
+    }
+    .footer-logo-text {
+      font-family: 'Fraunces', serif;
+      font-size: 18px; font-weight: 700;
+      color: #fff; display: block;
+      text-decoration: none; margin-bottom: 12px;
+    }
+    .footer-tagline {
+      font-size: 14px; color: rgba(255,255,255,0.45);
+      line-height: 1.65; max-width: 220px;
+    }
+    .footer-col-title {
+      font-size: 11px; font-weight: 700;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-links a {
+      font-size: 14px; color: rgba(255,255,255,0.58);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .footer-links a:hover { color: #fff; }
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 10px;
+    }
+    .footer-copy { font-size: 13px; color: rgba(255,255,255,0.3); }
+    .footer-tagline-small { font-size: 13px; color: rgba(255,255,255,0.3); font-style: italic; }
+
+    /* ── Responsive ──────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; padding: 60px 24px 40px; }
+      .hero-right { order: -1; }
+      .phone-frame { width: 260px; height: 510px; }
+      .why-header { grid-template-columns: 1fr; }
+      .feat-grid { grid-template-columns: 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; max-width: 420px; }
+      .test-grid { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .what-card { padding: 48px 28px; }
+      .deco { display: none; }
+    }
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .footer-top { grid-template-columns: 1fr; }
+      .nav-inner { padding: 0 20px; }
+      .hero { padding: 48px 20px 32px; }
+      .what-section, .why-section, .features-section, .test-section { padding-left: 20px; padding-right: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════ NAV ══════════════════════════════════════════════ -->
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <div class="nav-logo-icon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 1.5L10 6H14.5L11 9.5L12.5 14L8 11L3.5 14L5 9.5L1.5 6H6L8 1.5Z" fill="white" opacity="0.9"/>
+        </svg>
+      </div>
+      subspace.money
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#what">What</a></li>
+      <li><a href="#why">Why</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#testimonials">About</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <a href="app/login" class="btn-nav-login">Login</a>
+      <a href="app/signup" class="btn-nav-cta">Start for free</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════ HERO ═════════════════════════════════════════════ -->
+<section>
+  <div class="hero">
+
+    <!-- Left -->
+    <div class="hero-left">
+      <h1 class="hero-h1">
+        <span class="highlight">Helping</span> you manage<br />your money better
+      </h1>
+      <p class="hero-sub">
+        No app made finance management easy until Subspace.money came along. It's designed with one clear goal: save money.
+      </p>
+      <a href="app/signup" class="btn-cta-main">Try beta app</a>
+
+      <div class="social-proof">
+        <div class="avatars">
+          <span class="av1">A</span>
+          <span class="av2">R</span>
+          <span class="av3">S</span>
+          <span class="av4">K</span>
+          <span class="av5">P</span>
+        </div>
+        <div class="proof-info">
+          <div class="stars">★★★★★</div>
+          <p class="proof-text">100+ users joined beta</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Phone Mockup -->
+    <div class="hero-right">
+      <div class="phone-scene">
+
+        <!-- Decorative: Piggy bank -->
+        <div class="deco deco-piggy">
+          <svg class="piggy-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="40" cy="40" r="38" fill="#E8F5E0" stroke="#C8F04A" stroke-width="2"/>
+            <!-- Pig body -->
+            <ellipse cx="40" cy="46" rx="18" ry="14" fill="#F9C74F"/>
+            <!-- Snout -->
+            <ellipse cx="40" cy="54" rx="8" ry="5" fill="#F4A532"/>
+            <!-- Nostrils -->
+            <circle cx="37.5" cy="54" r="1.5" fill="#E07020"/>
+            <circle cx="42.5" cy="54" r="1.5" fill="#E07020"/>
+            <!-- Ear -->
+            <ellipse cx="28" cy="38" rx="5" ry="7" fill="#F4A532" transform="rotate(-15 28 38)"/>
+            <ellipse cx="52" cy="38" rx="5" ry="7" fill="#F4A532" transform="rotate(15 52 38)"/>
+            <!-- Eye -->
+            <circle cx="34" cy="44" r="2.5" fill="#fff"/>
+            <circle cx="34" cy="44" r="1.2" fill="#1A1A1A"/>
+            <circle cx="46" cy="44" r="2.5" fill="#fff"/>
+            <circle cx="46" cy="44" r="1.2" fill="#1A1A1A"/>
+            <!-- Coin slot -->
+            <rect x="36" y="34" width="8" height="2.5" rx="1.25" fill="#E07020"/>
+            <!-- Leg -->
+            <rect x="28" y="58" width="6" height="9" rx="3" fill="#F4A532"/>
+            <rect x="46" y="58" width="6" height="9" rx="3" fill="#F4A532"/>
+            <!-- Sparkle -->
+            <path d="M65 14L66.5 18L70.5 19.5L66.5 21L65 25L63.5 21L59.5 19.5L63.5 18L65 14Z" fill="#C8F04A"/>
+          </svg>
+        </div>
+
+        <!-- Decorative: Coin -->
+        <div class="deco deco-coin">
+          <svg class="coin-svg" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="35" cy="35" r="32" fill="#F9C74F" stroke="#E8A020" stroke-width="2.5"/>
+            <circle cx="35" cy="35" r="24" fill="#F4A532" stroke="#E8A020" stroke-width="1.5"/>
+            <text x="35" y="41" text-anchor="middle" font-family="'Fraunces',serif" font-size="22" font-weight="800" fill="#E07020">$</text>
+          </svg>
+        </div>
+
+        <!-- Decorative: Star -->
+        <div class="deco deco-star">
+          <svg class="star-svg" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22 0C22 0 22 9 22 22C22 22 9 22 0 22C0 22 9 22 22 22C22 22 22 35 22 44C22 44 22 35 22 22C22 22 35 22 44 22C44 22 35 22 22 22C22 22 22 9 22 0Z" fill="#1B4332"/>
+          </svg>
+        </div>
+
+        <!-- Phone -->
+        <div class="phone-frame">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+
+            <!-- Header (dark green) -->
+            <div class="ph-header">
+              <div class="ph-header-top">
+                <span class="ph-dash-label">Dashboard</span>
+                <div class="ph-header-icon">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <rect x="1" y="1" width="5" height="5" rx="1.5" fill="rgba(255,255,255,0.6)"/>
+                    <rect x="8" y="1" width="5" height="5" rx="1.5" fill="rgba(255,255,255,0.6)"/>
+                    <rect x="1" y="8" width="5" height="5" rx="1.5" fill="rgba(255,255,255,0.6)"/>
+                    <rect x="8" y="8" width="5" height="5" rx="1.5" fill="rgba(255,255,255,0.6)"/>
+                  </svg>
+                </div>
+              </div>
+              <p class="ph-bal-label">TOTAL BALANCE</p>
+              <p class="ph-balance">₹1,24,580.00</p>
+              <div class="ph-chip">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1.5V8.5M5 1.5L2.5 4M5 1.5L7.5 4" stroke="#C8F04A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                +11.3% &nbsp;Outstanding balance boost
+              </div>
+            </div>
+
+            <!-- Body -->
+            <div class="ph-body">
+
+              <!-- 3 categories -->
+              <div class="ph-cats">
+                <div class="ph-cat">
+                  <div class="ph-cat-icon ic-green">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 12V5.5L7 2.5L12 5.5V12H9V9H5V12H2Z" stroke="#1B4332" stroke-width="1.3" stroke-linejoin="round"/></svg>
+                  </div>
+                  <div class="ph-cat-name">Saving</div>
+                  <div class="ph-cat-amt">₹1,09,500</div>
+                  <div class="ph-cat-pct">75%</div>
+                </div>
+                <div class="ph-cat">
+                  <div class="ph-cat-icon ic-yellow">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2h1.2l1 5h6l1-3.5H4" stroke="#E8A020" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="5.5" cy="10.5" r="1" fill="#E8A020"/><circle cx="9.5" cy="10.5" r="1" fill="#E8A020"/></svg>
+                  </div>
+                  <div class="ph-cat-name">Shopping</div>
+                  <div class="ph-cat-amt">₹14,760</div>
+                  <div class="ph-cat-pct">96%</div>
+                </div>
+                <div class="ph-cat">
+                  <div class="ph-cat-icon ic-blue">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="#50A0DC" stroke-width="1.3"/><path d="M7 4v3l2 1.5" stroke="#50A0DC" stroke-width="1.3" stroke-linecap="round"/></svg>
+                  </div>
+                  <div class="ph-cat-name">Vacation</div>
+                  <div class="ph-cat-amt">₹23,253</div>
+                  <div class="ph-cat-pct">84%</div>
+                </div>
+              </div>
+
+              <!-- Budget for June -->
+              <div class="ph-budget">
+                <div>
+                  <div class="ph-budget-label">Budget for June</div>
+                  <div class="ph-budget-sub">You're on track for this month.</div>
+                </div>
+                <div class="ph-budget-amt">₹28,793</div>
+              </div>
+
+              <!-- Create a saving goal -->
+              <div class="ph-goal">
+                <div>
+                  <div class="ph-goal-title">Create a saving goal</div>
+                  <div class="ph-goal-sub">You don't need to make more money.<br/>Just save more money.</div>
+                </div>
+                <div class="ph-goal-btn">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 3v8M3 7h8" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+                </div>
+              </div>
+
+              <!-- Budget for June (bottom) -->
+              <div class="ph-budget-2">
+                <div>
+                  <div class="ph-budget-2-label">Budget for June</div>
+                  <div class="ph-budget-2-sub">Monthly overview</div>
+                </div>
+                <div class="ph-budget-2-amt">₹12,395</div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════ WHAT ══════════════════════════════════════════════ -->
+<div class="what-section" id="what">
+  <div class="what-card">
+    <p class="what-eyebrow">The product</p>
+    <h2 class="what-h2">What is Subspace.money?</h2>
+    <p class="what-body">
+      I found myself battling against badly designed bank apps, constantly wrestling with tax filings, and frustrations with investment tracking on spreadsheets. But, who said it has to be that way? So, I started working on Subspace.money! It's my solution to these day-to-day financial gripes, and I hope it can simplify your life too!
+    </p>
+  </div>
+</div>
+
+<!-- ═══════ WHY ═══════════════════════════════════════════════ -->
+<section class="why-section" id="why">
+  <div class="why-header">
+    <div>
+      <div class="why-tag">Why Subspace?</div>
+      <h2 class="why-h2">It works differently.</h2>
+    </div>
+    <p class="why-desc">Most finance apps are built around categories and pie charts. Subspace is built around how money actually moves through your life — recurring, shared, goal-linked, and often invisible.</p>
+  </div>
+
+  <div class="why-items">
+    <div class="why-item">
+      <div class="why-num">01</div>
+      <h3>It tracks what banks ignore.</h3>
+      <p>Banks log transactions. They don't tell you that your Netflix, Spotify, Amazon Prime, and Notion are quietly taking ₹3,200 a month. Subspace does.</p>
+    </div>
+    <div class="why-item">
+      <div class="why-num">02</div>
+      <h3>Savings that follow your income.</h3>
+      <p>Fixed goals break when life changes. Subspace adjusts your saving targets based on what came in this month — not what you planned six months ago.</p>
+    </div>
+    <div class="why-item">
+      <div class="why-num">03</div>
+      <h3>Group money without the awkward texts.</h3>
+      <p>Split a shared OTT plan, track who paid electricity, settle up — without a single message that says "hey, you still owe me."</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ FEATURES ══════════════════════════════════════════ -->
+<section class="features-section" id="features">
+  <p class="features-eyebrow">Features</p>
+  <h2 class="features-h2">Everything your money needs.</h2>
+  <div class="feat-grid">
+
+    <article class="feat-card">
+      <div class="feat-icon-wrap">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <rect x="2.5" y="4.5" width="17" height="13" rx="2.5" stroke="#1B4332" stroke-width="1.7"/>
+          <path d="M2.5 9h17" stroke="#1B4332" stroke-width="1.4"/>
+          <path d="M6.5 13h4M6.5 15.5h2.5" stroke="#1B4332" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h3 class="feat-title">Track Subscriptions</h3>
+      <p class="feat-desc">See every recurring charge in one place. Know exactly what renews, when it renews, and whether you're actually using it.</p>
+    </article>
+
+    <article class="feat-card">
+      <div class="feat-icon-wrap">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <circle cx="11" cy="11" r="8" stroke="#1B4332" stroke-width="1.7"/>
+          <path d="M11 7.5v3.5l3 2" stroke="#1B4332" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h3 class="feat-title">Split Bills</h3>
+      <p class="feat-desc">Create shared pools for any recurring expense. Members pay their share via UPI. No chasing. No awkward reminders.</p>
+    </article>
+
+    <article class="feat-card">
+      <div class="feat-icon-wrap">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <path d="M3.5 17l5-6.5 4 4.5L18 5" stroke="#1B4332" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h3 class="feat-title">Savings Goals</h3>
+      <p class="feat-desc">Set a target, pick a timeline. Subspace automatically adjusts monthly contributions based on what you earn and what you spend.</p>
+    </article>
+
+    <article class="feat-card">
+      <div class="feat-icon-wrap">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <path d="M11 3l1.8 4H19l-4.5 3.5 1.8 5.5L11 13 4.7 16l1.8-5.5L2 7h6.2L11 3Z" stroke="#1B4332" stroke-width="1.7" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h3 class="feat-title">AI Analytics</h3>
+      <p class="feat-desc">Get proactive insights — not just charts. The AI flags anomalies, predicts next month's spend, and suggests where to cut.</p>
+    </article>
+
+  </div>
+</section>
+
+<!-- ═══════ PRICING ════════════════════════════════════════════ -->
+<section class="pricing-section" id="pricing">
+  <div class="pricing-inner">
+    <p class="pricing-eyebrow">Pricing</p>
+    <h2 class="pricing-h2">Simple, honest pricing.</h2>
+    <p class="pricing-sub">No hidden charges. Pay only when you want more power.</p>
+    <div class="pricing-grid">
+
+      <!-- Free -->
+      <div class="price-card pc-free">
+        <div class="price-plan pp-free">Free</div>
+        <div class="price-amt pa-free">₹0</div>
+        <div class="price-per per-free">forever</div>
+        <ul class="price-feats pf-free">
+          <li><div class="pf-check pf-check-free"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4.5-4" stroke="#1B4332" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Subscription tracker (up to 5)</li>
+          <li><div class="pf-check pf-check-free"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4.5-4" stroke="#1B4332" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>2 savings goals</li>
+          <li><div class="pf-check pf-check-free"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4.5-4" stroke="#1B4332" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Basic spending analytics</li>
+          <li><div class="pf-check pf-check-free"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4.5-4" stroke="#1B4332" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>1 shared group</li>
+        </ul>
+        <a href="app/signup" class="btn-price-free">Start free</a>
+      </div>
+
+      <!-- Pro -->
+      <div class="price-card pc-pro">
+        <div class="price-badge">Most Popular</div>
+        <div class="price-plan pp-pro">Pro</div>
+        <div class="price-amt pa-pro">₹199</div>
+        <div class="price-per per-pro">per month</div>
+        <ul class="price-feats pf-pro">
+          <li><div class="pf-check pf-check-pro"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4.5-4" stroke="#C8F04A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Unlimited subscriptions</li>
+          <li><div class="pf-check pf-check-pro"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4.5-4" stroke="#C8F04A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Unlimited savings goals</li>
+          <li><div class="pf-check pf-check-pro"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4.5-4" stroke="#C8F04A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>AI spending insights</li>
+          <li><div class="pf-check pf-check-pro"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4.5-4" stroke="#C8F04A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Unlimited group pools</li>
+          <li><div class="pf-check pf-check-pro"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4.5-4" stroke="#C8F04A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Investment tracking</li>
+          <li><div class="pf-check pf-check-pro"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4.5-4" stroke="#C8F04A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Priority support</li>
+        </ul>
+        <a href="app/signup" class="btn-price-pro">Go Pro</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ TESTIMONIALS ══════════════════════════════════════ -->
+<section class="test-section" id="testimonials">
+  <p class="test-eyebrow">Early users</p>
+  <h2 class="test-h2">From the beta community.</h2>
+  <div class="test-grid">
+
+    <article class="test-card">
+      <div class="test-stars">★★★★★</div>
+      <p class="test-quote">"I had no idea I was spending ₹4,800 a month on subscriptions I barely used. Subspace found it in under two minutes."</p>
+      <div class="test-author">
+        <div class="test-av" style="background:#1B4332">A</div>
+        <div>
+          <div class="test-name">Arjun M.</div>
+          <div class="test-role">Software engineer, Bengaluru</div>
+        </div>
+      </div>
+    </article>
+
+    <article class="test-card">
+      <div class="test-stars">★★★★★</div>
+      <p class="test-quote">"The group payment feature is exactly what I needed for my flatmate situation. Nobody has to chase anyone anymore."</p>
+      <div class="test-author">
+        <div class="test-av" style="background:#2D6A4F">R</div>
+        <div>
+          <div class="test-name">Riya S.</div>
+          <div class="test-role">UX designer, Mumbai</div>
+        </div>
+      </div>
+    </article>
+
+    <article class="test-card">
+      <div class="test-stars">★★★★★</div>
+      <p class="test-quote">"Finally a finance app that doesn't feel like it was designed for accountants. Clean, fast, and the AI actually gives useful advice."</p>
+      <div class="test-author">
+        <div class="test-av" style="background:#3D6B58">K</div>
+        <div>
+          <div class="test-name">Karan P.</div>
+          <div class="test-role">Product manager, Delhi</div>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ═══════ CTA BAND ══════════════════════════════════════════ -->
+<div class="cta-band">
+  <h2 class="cta-band-h2">Ready to lift your money?</h2>
+  <p class="cta-band-sub">Join 100+ people already managing their finances smarter.</p>
+  <a href="app/signup" class="btn-cta-band">Start for free — it's free</a>
+</div>
+
+<!-- ═══════ FOOTER ════════════════════════════════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <a href="/" class="footer-logo-text">subspace.money</a>
+        <p class="footer-tagline">AI-powered finance management built for the way modern India thinks about money.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Product</div>
+        <ul class="footer-links">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#">Dashboard</a></li>
+          <li><a href="#">Changelog</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="#">About</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Legal</div>
+        <ul class="footer-links">
+          <li><a href="#">Privacy</a></li>
+          <li><a href="#">Terms</a></li>
+          <li><a href="#">Security</a></li>
+          <li><a href="#">Refunds</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Connect</div>
+        <ul class="footer-links">
+          <li><a href="#">Twitter / X</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">&copy; 2026 Subspace.money. All rights reserved.</p>
+      <p class="footer-tagline-small">Made with conviction.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Sticky nav shadow on scroll
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    nav.style.boxShadow = window.scrollY > 8 ? '0 2px 20px rgba(0,0,0,0.07)' : '';
+  }, { passive: true });
+
+  // Smooth anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+</script>
+
+</body>
+</html>

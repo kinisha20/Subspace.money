@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+venv/
+.env
+.venv/
+
+# Backend
+backend-py/.env
+backend-py/alembic/versions/*.pyc
+
+# Next.js
+app/.next/
+app/node_modules/
+app/out/
+app/.env.local
+app/.env*.local
+
+# OS
+.DS_Store
+Thumbs.db
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
