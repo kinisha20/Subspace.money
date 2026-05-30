@@ -6,12 +6,47 @@ export const metadata: Metadata = {
   description: "Track subscriptions, split bills, automate savings, and manage investments with AI. India's most premium personal finance platform.",
 };
 
+/* ── Inline SVG icons (no emojis) ───────────────────────── */
+const IconSubscription = () => (
+  <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="3" y="3" width="20" height="20" rx="5" stroke="#1A3C2A" strokeWidth="1.8"/>
+    <path d="M8 9h10M8 13h7M8 17h5" stroke="#1A3C2A" strokeWidth="1.8" strokeLinecap="round"/>
+  </svg>
+);
+const IconSplit = () => (
+  <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="7" cy="13" r="3.5" stroke="#1A3C2A" strokeWidth="1.8"/>
+    <circle cx="19" cy="7" r="3.5" stroke="#1A3C2A" strokeWidth="1.8"/>
+    <circle cx="19" cy="19" r="3.5" stroke="#1A3C2A" strokeWidth="1.8"/>
+    <path d="M10 12l6-4M10 14l6 4" stroke="#1A3C2A" strokeWidth="1.6" strokeLinecap="round"/>
+  </svg>
+);
+const IconGoal = () => (
+  <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="13" cy="13" r="9.5" stroke="#1A3C2A" strokeWidth="1.8"/>
+    <circle cx="13" cy="13" r="5.5" stroke="#1A3C2A" strokeWidth="1.8"/>
+    <circle cx="13" cy="13" r="2" fill="#1A3C2A"/>
+  </svg>
+);
+const IconAI = () => (
+  <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M13 3v3M13 20v3M3 13h3M20 13h3" stroke="#1A3C2A" strokeWidth="1.8" strokeLinecap="round"/>
+    <circle cx="13" cy="13" r="5.5" stroke="#1A3C2A" strokeWidth="1.8"/>
+    <path d="M10 13l2 2 4-4" stroke="#1A3C2A" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
+const BG = "#E0D5C8";
+const NAV_BG = "rgba(224,213,200,0.95)";
+const CARD_BG = "#D8CCBE";
+const CARD_BORDER = "#C9BFB0";
+
 export default function HomePage() {
   return (
-    <div style={{ background: "#F3EDE3", minHeight: "100vh", fontFamily: "'Satoshi','DM Sans',system-ui,sans-serif", overflowX: "hidden" }}>
+    <div style={{ background: BG, minHeight: "100vh", fontFamily: "'Satoshi','DM Sans',system-ui,sans-serif", overflowX: "hidden" }}>
 
       {/* ── NAV ─────────────────────────────────────────── */}
-      <nav style={{ position: "sticky", top: 0, zIndex: 100, background: "rgba(243,237,227,0.94)", backdropFilter: "blur(16px)", borderBottom: "1px solid rgba(0,0,0,0.06)" }}>
+      <nav style={{ position: "sticky", top: 0, zIndex: 100, background: NAV_BG, backdropFilter: "blur(16px)", borderBottom: "1px solid rgba(0,0,0,0.08)" }}>
         <div style={{ maxWidth: 1140, margin: "0 auto", padding: "0 28px", height: 64, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <Link href="/" style={{ display: "flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
             <div style={{ width: 30, height: 30, borderRadius: 8, background: "#1A3C2A", display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -53,7 +88,7 @@ export default function HomePage() {
             <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
               <div style={{ display: "flex" }}>
                 {["#1A3C2A","#7CCF5C","#374151","#0F5F56","#5CB840"].map((bg, i) => (
-                  <div key={i} style={{ width: 30, height: 30, borderRadius: "50%", background: bg, border: "2px solid #F3EDE3", marginLeft: i > 0 ? -8 : 0, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 700, color: "#fff" }}>
+                  <div key={i} style={{ width: 30, height: 30, borderRadius: "50%", background: bg, border: "2px solid " + BG, marginLeft: i > 0 ? -8 : 0, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 700, color: "#fff" }}>
                     {["A","P","R","S","M"][i]}
                   </div>
                 ))}
@@ -62,14 +97,8 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Right — animated phone */}
+          {/* Right — animated phone (no floating mascot emojis) */}
           <div style={{ flex: "1 1 320px", position: "relative", display: "flex", justifyContent: "center", minHeight: 480 }}>
-
-            {/* Bear mascot top-right */}
-            <div className="mascot-float" style={{ position: "absolute", top: 20, right: 20, zIndex: 10, fontSize: 42, filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.12))" }}>🐯</div>
-
-            {/* Coin mascot bottom-right */}
-            <div className="mascot-float-2" style={{ position: "absolute", bottom: 40, right: 10, zIndex: 10, fontSize: 40, filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.12))" }}>💰</div>
 
             {/* Phone frame */}
             <div className="phone-float" style={{ width: 270, position: "relative", zIndex: 5 }}>
@@ -86,16 +115,15 @@ export default function HomePage() {
                     <div>
                       <p style={{ fontSize: 9, color: "rgba(255,255,255,0.4)", marginBottom: 2 }}>TOTAL BALANCE</p>
                       <p style={{ fontFamily: "'Bricolage Grotesque',sans-serif", fontWeight: 700, fontSize: 22, color: "#fff", letterSpacing: "-0.02em" }}>&#8377;1,24,580.00</p>
-                      <span style={{ display: "inline-flex", alignItems: "center", gap: 3, background: "#7CCF5C", borderRadius: 999, padding: "2px 8px", fontSize: 8, fontWeight: 700, color: "#121212", marginTop: 4 }}>&#x2191; +11.3% Outstanding balance boost</span>
+                      <span style={{ display: "inline-flex", alignItems: "center", gap: 3, background: "#7CCF5C", borderRadius: 999, padding: "2px 8px", fontSize: 8, fontWeight: 700, color: "#121212", marginTop: 4 }}>&#x2191; +11.3% this month</span>
                     </div>
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 3 }}>{[1,2,3,4].map(i=><div key={i} style={{width:8,height:8,borderRadius:2,background:"rgba(255,255,255,0.12)"}}/>)}</div>
                   </div>
 
-                  {/* 3 category cards */}
+                  {/* 3 category cards — no emojis, use text labels */}
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 6, marginBottom: 8 }}>
-                    {[["🏠","Saving","₹1,09,500","75%"],["🛒","Shopping","₹14,760","96%"],["🏖","Vacation","₹23,253","84%"]].map(([ic,lb,vl,pt])=>(
+                    {[["Saving","₹1,09,500","75%"],["Shopping","₹14,760","96%"],["Vacation","₹23,253","84%"]].map(([lb,vl,pt])=>(
                       <div key={lb} style={{ background: "rgba(255,255,255,0.05)", borderRadius: 10, padding: "8px 7px" }}>
-                        <p style={{ fontSize: 13, marginBottom: 3 }}>{ic}</p>
                         <p style={{ fontSize: 7.5, color: "rgba(255,255,255,0.45)", marginBottom: 2 }}>{lb}</p>
                         <p style={{ fontSize: 10, fontWeight: 700, color: "#fff" }}>{vl}</p>
                         <p style={{ fontSize: 7, color: "rgba(255,255,255,0.3)" }}>{pt}</p>
@@ -107,7 +135,7 @@ export default function HomePage() {
                   <div style={{ background: "#7CCF5C", borderRadius: 10, padding: "8px 10px", marginBottom: 6, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <div>
                       <p style={{ fontSize: 9, fontWeight: 700, color: "#1A3C2A" }}>Budget for June</p>
-                      <p style={{ fontSize: 7.5, color: "rgba(26,60,42,0.6)" }}>You&apos;re on track for this month.</p>
+                      <p style={{ fontSize: 7.5, color: "rgba(26,60,42,0.6)" }}>You&apos;re on track this month.</p>
                     </div>
                     <p style={{ fontSize: 11, fontWeight: 800, color: "#1A3C2A" }}>&#8377;28,793</p>
                   </div>
@@ -116,16 +144,16 @@ export default function HomePage() {
                   <div style={{ background: "rgba(255,255,255,0.04)", borderRadius: 10, padding: "8px 10px", marginBottom: 6, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <div>
                       <p style={{ fontSize: 9, fontWeight: 600, color: "#fff" }}>Create a saving goal</p>
-                      <p style={{ fontSize: 7.5, color: "rgba(255,255,255,0.35)", maxWidth: 140 }}>You don&apos;t need to make more money. Just save more money</p>
+                      <p style={{ fontSize: 7.5, color: "rgba(255,255,255,0.35)", maxWidth: 140 }}>Save more, worry less</p>
                     </div>
                     <div style={{ width: 22, height: 22, borderRadius: "50%", background: "#1A3C2A", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, color: "#7CCF5C" }}>+</div>
                   </div>
 
-                  {/* Budget for June monthly */}
+                  {/* Budget monthly */}
                   <div style={{ background: "rgba(255,255,255,0.04)", borderRadius: 10, padding: "8px 10px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <div>
-                      <p style={{ fontSize: 9, fontWeight: 600, color: "#fff" }}>Budget for June</p>
-                      <p style={{ fontSize: 7.5, color: "rgba(255,255,255,0.35)" }}>Monthly overview</p>
+                      <p style={{ fontSize: 9, fontWeight: 600, color: "#fff" }}>Monthly overview</p>
+                      <p style={{ fontSize: 7.5, color: "rgba(255,255,255,0.35)" }}>June 2026</p>
                     </div>
                     <p style={{ fontSize: 11, fontWeight: 700, color: "#fff" }}>&#8377;12,395</p>
                   </div>
@@ -161,7 +189,7 @@ export default function HomePage() {
             { num: "03", title: "Group money, without the awkward forms.", desc: "Add members to a group, log shared expenses, and Subspace calculates who owes what. No spreadsheets, no screenshots, no awkward texts." },
           ].map(item=>(
             <div key={item.num}>
-              <p className="hero-font" style={{ fontSize: 44, color: "#E5E7EB", letterSpacing: "-0.04em", marginBottom: 10 }}>{item.num}</p>
+              <p className="hero-font" style={{ fontSize: 44, color: "#C4B8A8", letterSpacing: "-0.04em", marginBottom: 10 }}>{item.num}</p>
               <h3 style={{ fontSize: 17, fontWeight: 700, color: "#121212", marginBottom: 10 }}>{item.title}</h3>
               <p style={{ fontSize: 14, color: "#6B6B6B", lineHeight: 1.7 }}>{item.desc}</p>
             </div>
@@ -176,13 +204,13 @@ export default function HomePage() {
           <h2 className="hero-font" style={{ fontSize: "clamp(26px,3.2vw,40px)", color: "#121212", letterSpacing: "-0.02em", marginBottom: 48, textAlign: "center" }}>Everything your money needs.</h2>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(230px,1fr))", gap: 18 }}>
             {[
-              { title: "Track Subscriptions", desc: "Know exactly what you pay, when it renews, and whether you actually use it. Never pay for something you forgot about.", icon: "📋" },
-              { title: "Split Bills", desc: "Split shared expenses without awkward texts. Add members, log costs, and Subspace calculates who owes what instantly.", icon: "🤝" },
-              { title: "Savings Goals", desc: "Set a target and a deadline. AI automatically adjusts how much to save each month based on your real income and spending.", icon: "🎯" },
-              { title: "AI Analytics", desc: "Not just charts — real recommendations. Where to cut, where to invest, what to pause. Personalised to your money.", icon: "✨" },
+              { title: "Track Subscriptions", desc: "Know exactly what you pay, when it renews, and whether you actually use it. Never pay for something you forgot about.", Icon: IconSubscription },
+              { title: "Split Bills", desc: "Split shared expenses without awkward texts. Add members, log costs, and Subspace calculates who owes what instantly.", Icon: IconSplit },
+              { title: "Savings Goals", desc: "Set a target and a deadline. AI automatically adjusts how much to save each month based on your real income and spending.", Icon: IconGoal },
+              { title: "AI Analytics", desc: "Not just charts — real recommendations. Where to cut, where to invest, what to pause. Personalised to your money.", Icon: IconAI },
             ].map(f=>(
-              <div key={f.title} style={{ background: "#F3EDE3", border: "1.5px solid #E5E0D5", borderRadius: 20, padding: "28px 24px" }}>
-                <div style={{ fontSize: 28, marginBottom: 14 }}>{f.icon}</div>
+              <div key={f.title} style={{ background: CARD_BG, border: "1.5px solid " + CARD_BORDER, borderRadius: 20, padding: "28px 24px" }}>
+                <div style={{ marginBottom: 14 }}><f.Icon /></div>
                 <h3 style={{ fontFamily: "'Bricolage Grotesque',sans-serif", fontWeight: 700, fontSize: 18, color: "#121212", marginBottom: 10 }}>{f.title}</h3>
                 <p style={{ fontSize: 14, color: "#6B6B6B", lineHeight: 1.65 }}>{f.desc}</p>
               </div>
@@ -192,7 +220,7 @@ export default function HomePage() {
       </section>
 
       {/* ── PRICING ──────────────────────────────────────── */}
-      <section id="pricing" style={{ padding: "80px 28px" }}>
+      <section id="pricing" style={{ padding: "80px 28px", background: BG }}>
         <div style={{ maxWidth: 1140, margin: "0 auto" }}>
           <p style={{ fontSize: 11, fontWeight: 700, color: "#1A3C2A", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 14, textAlign: "center" }}>Pricing</p>
           <h2 className="hero-font" style={{ fontSize: "clamp(26px,3.2vw,40px)", color: "#121212", letterSpacing: "-0.02em", marginBottom: 12, textAlign: "center" }}>Simple, honest pricing.</h2>
@@ -202,7 +230,7 @@ export default function HomePage() {
               { plan: "Free", price: "₹0", per: "forever", features: ["5 subscriptions","2 savings goals","Basic analytics","1 group"], cta: "Start free", href: "/signup", primary: false },
               { plan: "Pro", price: "₹190", per: "per month", features: ["Unlimited subscriptions","Unlimited goals","AI insights","Unlimited groups","Investment tracking"], cta: "Go Pro", href: "/signup", primary: true },
             ].map(p=>(
-              <div key={p.plan} style={{ borderRadius: 24, padding: "36px 30px", background: p.primary ? "#1A3C2A" : "#F3EDE3", border: p.primary ? "none" : "1.5px solid #E5E0D5", position: "relative" }}>
+              <div key={p.plan} style={{ borderRadius: 24, padding: "36px 30px", background: p.primary ? "#1A3C2A" : CARD_BG, border: p.primary ? "none" : "1.5px solid " + CARD_BORDER, position: "relative" }}>
                 {p.primary && <span style={{ position: "absolute", top: 16, right: 16, background: "#7CCF5C", color: "#121212", fontSize: 10, fontWeight: 700, borderRadius: 999, padding: "3px 10px" }}>Popular</span>}
                 <p style={{ fontSize: 11, fontWeight: 700, color: p.primary ? "#7CCF5C" : "#6B6B6B", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 10 }}>{p.plan}</p>
                 <p className="hero-font" style={{ fontSize: 52, color: p.primary ? "#fff" : "#121212", letterSpacing: "-0.04em", lineHeight: 1 }}>{p.price}</p>
@@ -210,7 +238,7 @@ export default function HomePage() {
                 <ul style={{ listStyle: "none", padding: 0, marginBottom: 28, display: "flex", flexDirection: "column", gap: 10 }}>
                   {p.features.map(f=>(
                     <li key={f} style={{ display: "flex", alignItems: "center", gap: 9, fontSize: 13, color: p.primary ? "rgba(255,255,255,0.8)" : "#374151" }}>
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7.5" fill={p.primary ? "rgba(124,207,92,0.2)" : "#EDE8DF"}/><path d="M5 8l2 2 4-4" stroke={p.primary ? "#7CCF5C" : "#1A3C2A"} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7.5" fill={p.primary ? "rgba(124,207,92,0.2)" : "#C9BFB0"}/><path d="M5 8l2 2 4-4" stroke={p.primary ? "#7CCF5C" : "#1A3C2A"} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                       {f}
                     </li>
                   ))}
@@ -233,7 +261,7 @@ export default function HomePage() {
               { quote: "The group finance feature is insane. My friends and I split rent and groceries through it — no more awkward WhatsApp messages.", name: "Priya M.", role: "Product Manager, Bengaluru" },
               { quote: "Finally an app that understands Indian finances. UPI-first, INR everywhere, and the insights are actually useful.", name: "Rohit K.", role: "Freelance designer, Mumbai" },
             ].map(t=>(
-              <div key={t.name} style={{ background: "#F3EDE3", borderRadius: 20, padding: "28px 24px", border: "1.5px solid #E5E0D5" }}>
+              <div key={t.name} style={{ background: CARD_BG, borderRadius: 20, padding: "28px 24px", border: "1.5px solid " + CARD_BORDER }}>
                 <div style={{ display: "flex", gap: 2, marginBottom: 14 }}>
                   {[1,2,3,4,5].map(s=><span key={s} style={{ color: "#F59E0B", fontSize: 14 }}>★</span>)}
                 </div>
