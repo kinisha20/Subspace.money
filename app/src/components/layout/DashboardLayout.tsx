@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Bell, Menu, Search } from "lucide-react";
 import Link from "next/link";
+import { getUser } from "@/lib/user-store";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -19,6 +20,12 @@ export function DashboardLayout({
   actions,
 }: DashboardLayoutProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [initials, setInitials] = useState("A");
+
+  useEffect(() => {
+    const u = getUser();
+    if (u) setInitials(u.initials.charAt(0));
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#F5EFE7]">
@@ -116,14 +123,14 @@ export function DashboardLayout({
             </Link>
 
             {/* Avatar */}
-            <div
-              className="w-8 h-8 rounded-full bg-teal-500 flex items-center justify-center flex-shrink-0 cursor-pointer"
+            <Link
+              href="/profile"
+              className="w-8 h-8 rounded-full bg-teal-500 flex items-center justify-center flex-shrink-0 cursor-pointer no-underline"
               title="Account settings"
-              role="button"
               aria-label="Open account settings"
             >
-              <span className="text-xs font-bold text-white">A</span>
-            </div>
+              <span className="text-xs font-bold text-white">{initials}</span>
+            </Link>
           </div>
         </header>
 

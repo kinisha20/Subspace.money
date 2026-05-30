@@ -1,7 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { User, Mail, Phone, Shield, CreditCard, Bell, Moon, Trash2, ChevronRight } from "lucide-react";
+import { getUser } from "@/lib/user-store";
 
 interface SettingRowProps {
   icon: React.ElementType;
@@ -31,8 +32,20 @@ function SettingRow({ icon: Icon, label, description, badge, onClick }: SettingR
 }
 
 export function ProfileView() {
-  const [name, setName] = useState("Aryan Gupta");
-  const [email, setEmail] = useState("aryan@example.com");
+  const [name,     setName]     = useState("Aryan Gupta");
+  const [email,    setEmail]    = useState("demo@subspace.money");
+  const [initials, setInitials] = useState("A");
+  const [plan,     setPlan]     = useState<"pro" | "free">("pro");
+
+  useEffect(() => {
+    const u = getUser();
+    if (u) {
+      setName(u.name);
+      setEmail(u.email);
+      setInitials(u.initials);
+      setPlan(u.plan);
+    }
+  }, []);
 
   const handleSave = () => {
     toast.success("Profile updated successfully");
@@ -45,11 +58,13 @@ export function ProfileView() {
       <div className="bg-white rounded-[20px] border border-[#E5E7EB] p-6">
         <div className="flex items-center gap-4 mb-6">
           <div className="w-16 h-16 rounded-2xl bg-[#0F5F56] flex items-center justify-center flex-shrink-0" aria-hidden="true">
-            <span style={{ fontFamily: "'Instrument Serif', serif" }} className="text-2xl text-white">A</span>
+            <span style={{ fontFamily: "'Instrument Serif', serif" }} className="text-2xl text-white">{initials.charAt(0)}</span>
           </div>
           <div>
             <h2 style={{ fontFamily: "'Instrument Serif', serif" }} className="text-[22px] text-[#121212] tracking-tight">{name}</h2>
-            <span className="inline-flex text-[11px] font-bold text-[#7CCF5C] bg-[#7CCF5C]/10 px-2.5 py-0.5 rounded-full">Pro Plan</span>
+            <span className={`inline-flex text-[11px] font-bold px-2.5 py-0.5 rounded-full ${
+              plan === "pro" ? "text-[#7CCF5C] bg-[#7CCF5C]/10" : "text-[#6B6B6B] bg-[#F5EFE7]"
+            }`}>{plan === "pro" ? "⭐ Pro Plan" : "Free Plan"}</span>
           </div>
         </div>
 
@@ -87,7 +102,7 @@ export function ProfileView() {
       <div className="bg-white rounded-[20px] border border-[#E5E7EB] p-5">
         <h3 style={{ fontFamily: "'Instrument Serif', serif" }} className="text-[17px] text-[#121212] tracking-tight mb-4">Account</h3>
         <SettingRow icon={Shield}     label="Security & Privacy"    description="Password, 2FA, privacy settings" onClick={() => toast.info("Security settings")} />
-        <SettingRow icon={CreditCard}  label="Billing & Subscription" description="Pro plan — renews June 15"       badge="Pro" onClick={() => toast.info("Billing")} />
+        <SettingRow icon={CreditCard}  label="Billing & Subscription" description={plan === "pro" ? "Pro plan — renews June 15" : "Free plan — upgrade anytime"} badge={plan === "pro" ? "Pro" : undefined} onClick={() => toast.info("Billing")} />
         <SettingRow icon={Bell}        label="Notifications"          description="Manage alerts and reminders"      onClick={() => toast.info("Notification settings")} />
         <SettingRow icon={Moon}        label="Appearance"             description="Dark mode, theme preferences"     onClick={() => toast.info("Appearance")} />
       </div>
