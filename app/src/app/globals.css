@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap');
 
 /* ─── Satoshi & General Sans via CDN ────────────────────────────────────── */
 @import url('https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,600,700,900&f[]=general-sans@300,400,500,600,700&display=swap');
@@ -329,6 +330,24 @@
 .page-enter {
   animation: fadeUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
+
+/* ─── Phone Float Animation ─────────────────────────────────────────────── */
+@keyframes phoneFloat {
+  0%, 100% { transform: translateY(0px) rotate(-2deg); }
+  50%       { transform: translateY(-22px) rotate(-2deg); }
+}
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-12px); }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.phone-float    { animation: phoneFloat 4s ease-in-out infinite; }
+.mascot-float   { animation: floatSlow 3s ease-in-out infinite; }
+.mascot-float-2 { animation: floatSlow 3.5s ease-in-out infinite 0.8s; }
+.hero-font      { font-family: 'Bricolage Grotesque', 'Satoshi', sans-serif; font-weight: 800; }
 
 /* ─── Loading Skeleton ──────────────────────────────────────────────────── */
 @keyframes shimmer {
