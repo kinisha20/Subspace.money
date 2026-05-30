@@ -116,7 +116,7 @@ export function SavingsView() {
                 <p className="text-[13px] font-bold text-[#1A3C2A] mb-1">{mockSavingsGoals.length - 2} more goals locked</p>
                 <p className="text-[12px] text-[#6B6B6B]">Free plan allows 2 goals. Upgrade to set unlimited savings goals.</p>
               </div>
-              <Link href="/login" className="text-[12px] font-bold bg-[#1A3C2A] text-white rounded-full px-4 py-2 no-underline flex-shrink-0 ml-4">Upgrade</Link>
+              <Link href="/upgrade" className="text-[12px] font-bold bg-[#1A3C2A] text-white rounded-full px-4 py-2 no-underline flex-shrink-0 ml-4">Upgrade</Link>
             </div>
           )}
 

@@ -77,7 +77,7 @@ export function InvestmentsView() {
             </div>
           ))}
         </div>
-        <Link href="/login" className="inline-flex items-center gap-2 bg-[#1A3C2A] text-white text-[14px] font-semibold rounded-full px-8 py-3.5 no-underline hover:bg-[#0F2018] transition-colors">
+        <Link href="/upgrade" className="inline-flex items-center gap-2 bg-[#1A3C2A] text-white text-[14px] font-semibold rounded-full px-8 py-3.5 no-underline hover:bg-[#0F2018] transition-colors">
           Upgrade to Pro — ₹190/month
         </Link>
         <p className="text-[12px] text-[#9CA3AF] mt-3">Or <Link href="/login" className="text-[#0F5F56] no-underline hover:underline">sign in with Pro demo account</Link></p>

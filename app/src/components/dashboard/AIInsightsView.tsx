@@ -181,7 +181,7 @@ export function AIInsightsView() {
           </div>
           <h3 style={{fontFamily:"'Instrument Serif',serif"}} className="text-[20px] text-white mb-2">AI Finance Assistant</h3>
           <p className="text-[13px] text-white/50 max-w-[300px] leading-relaxed mb-5">Ask unlimited questions about your finances, get personalized recommendations, and let AI optimize your budget — Pro only.</p>
-          <Link href="/login" className="inline-flex items-center bg-[#7CCF5C] text-[#121212] text-[13px] font-bold rounded-full px-6 py-2.5 no-underline hover:brightness-110 transition-all">Upgrade to Pro</Link>
+          <Link href="/upgrade" className="inline-flex items-center bg-[#7CCF5C] text-[#121212] text-[13px] font-bold rounded-full px-6 py-2.5 no-underline hover:brightness-110 transition-all">Upgrade to Pro</Link>
         </div>
       )}
     </div>
