@@ -5,23 +5,12 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { loginUser } from "@/lib/user-store";
 
-const ACCOUNTS = [
-  { label: "Pro plan", email: "demo@subspace.money", password: "demo1234", color: "#7CCF5C", textColor: "#1A3C2A", badge: "⭐ Pro" },
-  { label: "Free plan", email: "free@subspace.money", password: "free1234", color: "#E5E7EB", textColor: "#6B6B6B", badge: "Free" },
-];
-
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail]       = useState("demo@subspace.money");
-  const [password, setPassword] = useState("demo1234");
-  const [error, setError]       = useState("");
-  const [loading, setLoading]   = useState(false);
-
-  const fillAccount = (acc: typeof ACCOUNTS[0]) => {
-    setEmail(acc.email);
-    setPassword(acc.password);
-    setError("");
-  };
+  const [email,    setEmail]    = useState("");
+  const [password, setPassword] = useState("");
+  const [error,    setError]    = useState("");
+  const [loading,  setLoading]  = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,7 +19,7 @@ export default function LoginPage() {
     setTimeout(() => {
       const user = loginUser(email, password);
       if (!user) {
-        setError("Invalid email or password. Use one of the demo accounts below.");
+        setError("Invalid email or password. Please check your credentials.");
         setLoading(false);
         return;
       }
@@ -78,31 +67,7 @@ export default function LoginPage() {
           <h1 style={{ fontFamily: "'Instrument Serif', serif" }} className="text-[32px] text-[#121212] tracking-tight mb-2">
             Welcome back
           </h1>
-          <p className="text-[15px] text-[#6B6B6B] mb-6">Sign in to continue to your dashboard.</p>
-
-          {/* Demo account switcher */}
-          <div className="bg-white border border-[#E5E7EB] rounded-2xl p-4 mb-6">
-            <p className="text-[11px] font-bold text-[#9CA3AF] uppercase tracking-wider mb-3">Try a demo account</p>
-            <div className="grid grid-cols-2 gap-2">
-              {ACCOUNTS.map((acc) => (
-                <button
-                  key={acc.email}
-                  type="button"
-                  onClick={() => fillAccount(acc)}
-                  className={`flex flex-col items-start gap-1 rounded-xl px-3 py-2.5 border-2 transition-all text-left ${
-                    email === acc.email
-                      ? "border-[#0F5F56] bg-[#0F5F56]/5"
-                      : "border-[#E5E7EB] hover:border-[#0F5F56]/40"
-                  }`}
-                >
-                  <span className={`text-[10px] font-bold rounded-full px-2 py-0.5`}
-                    style={{ background: acc.color, color: acc.textColor }}>{acc.badge}</span>
-                  <span className="text-[12px] font-semibold text-[#121212]">{acc.label}</span>
-                  <span className="text-[10px] text-[#9CA3AF] truncate w-full">{acc.email}</span>
-                </button>
-              ))}
-            </div>
-          </div>
+          <p className="text-[15px] text-[#6B6B6B] mb-8">Sign in to continue to your dashboard.</p>
 
           <form onSubmit={handleSubmit} className="space-y-4" aria-label="Login form">
             <div>
@@ -111,6 +76,7 @@ export default function LoginPage() {
                 id="login-email"
                 type="email"
                 required
+                placeholder="Enter your email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 className="w-full bg-white border border-[#E5E7EB] rounded-xl px-4 py-3 text-[14px] text-[#121212] outline-none focus:border-[#0F5F56] focus:ring-2 focus:ring-[#0F5F56]/15 transition-all placeholder:text-[#9CA3AF]"
@@ -126,6 +92,7 @@ export default function LoginPage() {
                 id="login-password"
                 type="password"
                 required
+                placeholder="Enter your password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 className="w-full bg-white border border-[#E5E7EB] rounded-xl px-4 py-3 text-[14px] text-[#121212] outline-none focus:border-[#0F5F56] focus:ring-2 focus:ring-[#0F5F56]/15 transition-all placeholder:text-[#9CA3AF]"
