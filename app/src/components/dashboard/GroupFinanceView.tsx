@@ -1,8 +1,25 @@
 "use client";
 import { mockGroups } from "@/lib/mock-data";
 import { formatINR } from "@/lib/design-tokens";
-import { Plus, CheckCircle2, Clock } from "lucide-react";
+import { Plus, CheckCircle2, Clock, Bell } from "lucide-react";
 import { toast } from "sonner";
+
+// Gradient / solid color map keyed by first letter of member name
+const AVATAR_COLORS: Record<string, string> = {
+  A: "linear-gradient(135deg, #0F5F56, #1A7A6E)",
+  R: "#E05252",
+  S: "#7C3AED",
+  P: "#2563EB",
+  K: "#D97706",
+  M: "#DB2777",
+  V: "#059669",
+};
+
+function memberAvatarStyle(initials: string): React.CSSProperties {
+  const letter = initials.charAt(0).toUpperCase();
+  const color  = AVATAR_COLORS[letter] ?? "#374151";
+  return { background: color };
+}
 
 export function GroupFinanceView() {
   const totalOwed = mockGroups.reduce((s, g) => {
@@ -44,7 +61,12 @@ export function GroupFinanceView() {
               {group.members.map((member, i) => (
                 <div key={i} className="flex items-center justify-between py-2 border-b border-[#F5EFE7] last:border-0">
                   <div className="flex items-center gap-2.5">
-                    <div className="w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-bold text-white flex-shrink-0" style={{ background: member.avatar }}>
+                    {/* Polished gradient avatar */}
+                    <div
+                      className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold text-white flex-shrink-0 shadow-sm"
+                      style={memberAvatarStyle(member.initials)}
+                      aria-hidden="true"
+                    >
                       {member.initials}
                     </div>
                     <span className="text-[13px] font-semibold text-[#121212]">{member.name}</span>
@@ -68,23 +90,32 @@ export function GroupFinanceView() {
               <p className="text-[12px] text-[#9CA3AF]">
                 Due {new Date(group.nextDue).toLocaleDateString("en-IN", { day: "numeric", month: "long" })}
               </p>
+              {/* Polished outline reminder button */}
               <button
                 onClick={() => toast.success("Reminder sent to all members")}
-                className="px-4 py-1.5 rounded-full bg-[#0F5F56] text-white text-[12px] font-semibold hover:bg-[#083B35] transition-colors"
+                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-[#0F5F56] text-[#0F5F56] text-[12px] font-semibold hover:bg-[#0F5F56] hover:text-white transition-all duration-200 active:scale-95"
               >
+                <Bell size={12} aria-hidden="true" />
                 Send reminder
               </button>
             </div>
           </div>
         ))}
 
+        {/* Create group dashed card */}
         <button
+          id="create-group-btn"
           onClick={() => toast.info("Group creation coming soon")}
-          className="border-2 border-dashed border-[#E5E7EB] rounded-[20px] p-5 flex flex-col items-center justify-center gap-2 text-[#9CA3AF] hover:border-teal-300 hover:text-teal-500 transition-all duration-200 min-h-[200px]"
+          className="group border-2 border-dashed border-[#E5E7EB] rounded-[20px] p-8 flex flex-col items-center justify-center gap-3 text-[#9CA3AF] hover:border-teal-400 hover:text-teal-500 hover:bg-teal-50/40 transition-all duration-300 min-h-[220px]"
           aria-label="Create new group"
         >
-          <Plus size={20} aria-hidden="true" />
-          <span className="text-[13px] font-semibold">Create group</span>
+          <div className="w-12 h-12 rounded-2xl border-2 border-dashed border-current flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+            <Plus size={22} aria-hidden="true" />
+          </div>
+          <div className="text-center">
+            <p className="text-[14px] font-bold">Create group</p>
+            <p className="text-[12px] opacity-70 mt-0.5">Split expenses with friends</p>
+          </div>
         </button>
       </div>
     </div>

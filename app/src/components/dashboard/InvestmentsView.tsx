@@ -4,6 +4,38 @@ import { formatINR } from "@/lib/design-tokens";
 import { TrendingUp, TrendingDown } from "lucide-react";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 
+// Brand-styled logo config keyed by holding name
+const logoConfig: Record<string, { bg: string; label: string }> = {
+  "Nifty 50 Index Fund":  { bg: "#1B2A6B", label: "N50"  },
+  "HDFC Small Cap Fund":  { bg: "#E31837", label: "HDFC" },
+  "Digital Gold":         { bg: "#F59E0B", label: "GOLD" },
+  "HDFC Bank FD":         { bg: "#004C8F", label: "HDFC" },
+  "Reliance Industries":  { bg: "#1E3A5F", label: "RIL"  },
+};
+
+function HoldingLogo({ name, fallbackColor }: { name: string; fallbackColor: string }) {
+  const cfg = logoConfig[name];
+  const bg  = cfg?.bg ?? fallbackColor;
+  const lbl = cfg?.label ?? name.charAt(0);
+
+  return (
+    <div
+      className="w-10 h-10 rounded-xl flex flex-col items-center justify-center flex-shrink-0"
+      style={{ background: bg }}
+      aria-hidden="true"
+    >
+      {name === "HDFC Bank FD" ? (
+        <div className="flex flex-col items-center leading-none">
+          <span className="text-[9px] font-extrabold text-white tracking-tight">HDFC</span>
+          <span className="text-[8px] font-bold text-white/80 tracking-wide">Bank</span>
+        </div>
+      ) : (
+        <span className="text-[10px] font-extrabold text-white tracking-tight">{lbl}</span>
+      )}
+    </div>
+  );
+}
+
 export function InvestmentsView() {
   const totalInvested = mockInvestments.reduce((s, i) => s + i.invested, 0);
   const totalCurrent  = mockInvestments.reduce((s, i) => s + i.current,  0);
@@ -78,9 +110,7 @@ export function InvestmentsView() {
             {mockInvestments.map((inv) => (
               <div key={inv.id} className="flex items-center justify-between py-3 border-b border-[#F5EFE7] last:border-0">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0" style={{ background: inv.color }}>
-                    {inv.name.charAt(0)}
-                  </div>
+                  <HoldingLogo name={inv.name} fallbackColor={inv.color} />
                   <div>
                     <p className="text-[13px] font-bold text-[#121212]">{inv.name}</p>
                     <p className="text-[11px] text-[#9CA3AF] capitalize">{inv.type.replace("_", " ")}</p>
