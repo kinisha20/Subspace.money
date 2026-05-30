@@ -20,7 +20,7 @@ export default function HomePage() {
             <span style={{ fontFamily: "'Bricolage Grotesque','Satoshi',sans-serif", fontWeight: 700, fontSize: 17, color: "#1A3C2A" }}>subspace.money</span>
           </Link>
           <div style={{ display: "flex", alignItems: "center", gap: 32 }}>
-            {[["What","#what"],["Why","#why"],["Features","#features"],["About","#about"],["Pricing","#pricing"]].map(([l,h])=>(
+            {[["What","#what"],["Why","#why"],["Features","#features"],["Pricing","#pricing"],["About","#about"]].map(([l,h])=>(
               <Link key={l} href={h} style={{ fontSize: 14, fontWeight: 500, color: "#374151", textDecoration: "none" }}>{l}</Link>
             ))}
           </div>
@@ -223,7 +223,7 @@ export default function HomePage() {
       </section>
 
       {/* ── TESTIMONIALS ─────────────────────────────────── */}
-      <section style={{ background: "#fff", padding: "80px 28px" }}>
+      <section id="about" style={{ background: "#fff", padding: "80px 28px" }}>
         <div style={{ maxWidth: 1140, margin: "0 auto" }}>
           <p style={{ fontSize: 11, fontWeight: 700, color: "#1A3C2A", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 14, textAlign: "center" }}>Beta community</p>
           <h2 className="hero-font" style={{ fontSize: "clamp(24px,3vw,38px)", color: "#121212", letterSpacing: "-0.02em", marginBottom: 44, textAlign: "center" }}>From the beta community.</h2>
