@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -43,8 +44,13 @@ interface SidebarProps {
 
 export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
   const pathname = usePathname();
+  const router   = useRouter();
   const [collapsed, setCollapsed] = useState(false);
   const overlayRef = useRef<HTMLDivElement>(null);
+
+  const handleLogout = () => {
+    router.push("/login");
+  };
 
   // Close mobile sidebar on route change
   useEffect(() => {
@@ -180,20 +186,30 @@ export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
         {/* User area */}
         <div className={`border-t border-gray-50 p-3 flex-shrink-0 ${collapsed ? "flex justify-center" : ""}`}>
           {!collapsed ? (
-            <div className="flex items-center gap-3 rounded-xl px-3 py-2.5 hover:bg-[#F5EFE7] transition-colors cursor-pointer">
+            <button
+              onClick={handleLogout}
+              className="w-full flex items-center gap-3 rounded-xl px-3 py-2.5 hover:bg-red-50 hover:text-red-500 transition-colors cursor-pointer group text-left"
+              aria-label="Log out"
+              title="Log out"
+            >
               <div className="w-8 h-8 rounded-full bg-teal-500 flex items-center justify-center flex-shrink-0" aria-hidden="true">
                 <span className="text-xs font-bold text-white">A</span>
               </div>
               <div className="flex-1 min-w-0">
-                <div className="text-[13px] font-semibold text-[#121212] truncate">Aryan Gupta</div>
-                <div className="text-[11px] text-[#6B6B6B] truncate">Pro plan</div>
+                <div className="text-[13px] font-semibold text-[#121212] truncate group-hover:text-red-500 transition-colors">Aryan Gupta</div>
+                <div className="text-[11px] text-[#6B6B6B] truncate group-hover:text-red-400 transition-colors">Pro plan</div>
               </div>
-              <LogOut size={14} className="text-[#9CA3AF] flex-shrink-0" aria-hidden="true" />
-            </div>
+              <LogOut size={14} className="text-[#9CA3AF] flex-shrink-0 group-hover:text-red-500 transition-colors" aria-hidden="true" />
+            </button>
           ) : (
-            <div className="w-8 h-8 rounded-full bg-teal-500 flex items-center justify-center cursor-pointer" title="Account">
+            <button
+              onClick={handleLogout}
+              className="w-8 h-8 rounded-full bg-teal-500 flex items-center justify-center cursor-pointer hover:bg-red-500 transition-colors"
+              title="Log out"
+              aria-label="Log out"
+            >
               <span className="text-xs font-bold text-white">A</span>
-            </div>
+            </button>
           )}
         </div>
 
