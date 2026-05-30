@@ -49,7 +49,7 @@ export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
 
   const handleLogout = () => {
-    router.push("/login");
+    router.push("/");
   };
 
   // Close mobile sidebar on route change
