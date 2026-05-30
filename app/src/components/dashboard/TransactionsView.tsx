@@ -24,6 +24,25 @@ export function TransactionsView() {
   const totalCredit = filtered.filter(t => t.type === "credit").reduce((s, t) => s + t.amount, 0);
   const totalDebit  = filtered.filter(t => t.type === "debit" ).reduce((s, t) => s + t.amount, 0);
 
+  const exportCSV = () => {
+    const headers = ["Date", "Description", "Category", "Type", "Amount (INR)"];
+    const rows = filtered.map(tx => [
+      tx.date,
+      `"${tx.description}"`,
+      tx.category,
+      tx.type === "credit" ? "Income" : "Expense",
+      tx.type === "credit" ? `+${tx.amount}` : `-${tx.amount}`,
+    ]);
+    const csv = [headers, ...rows].map(r => r.join(",")).join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement("a");
+    a.href     = url;
+    a.download = `subspace-transactions-${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="space-y-5 page-enter">
 
@@ -90,7 +109,11 @@ export function TransactionsView() {
       <div className="bg-white rounded-[20px] border border-[#E5E7EB] overflow-hidden">
         <div className="flex items-center justify-between px-5 py-4 border-b border-[#F5EFE7]">
           <p className="text-[13px] text-[#6B6B6B]">{filtered.length} transactions</p>
-          <button className="flex items-center gap-1.5 text-[12px] font-semibold text-teal-500 hover:text-teal-600 transition-colors">
+          <button
+            onClick={exportCSV}
+            className="flex items-center gap-1.5 text-[12px] font-semibold text-teal-500 hover:text-teal-600 active:scale-95 transition-all"
+            aria-label="Download transactions as CSV"
+          >
             <Download size={13} aria-hidden="true" /> Export CSV
           </button>
         </div>

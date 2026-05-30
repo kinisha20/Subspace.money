@@ -55,6 +55,7 @@ export interface AIInsight {
   description: string;
   impact: string;
   actionLabel: string;
+  actionHref: string;
 }
 
 export interface GroupMember {
@@ -126,6 +127,7 @@ export const mockAIInsights: AIInsight[] = [
     description: "Amazon Prime, Notion Pro, and ChatGPT Plus total ₹3,569/month but show no recent usage. You could save ₹42,828 annually by pausing or cancelling these.",
     impact: "₹3,569/month",
     actionLabel: "Review subscriptions",
+    actionHref: "/subscriptions",
   },
   {
     id: "2",
@@ -134,6 +136,7 @@ export const mockAIInsights: AIInsight[] = [
     description: "At your current contribution of ₹5,000/month, you'll reach your Goa trip goal 3 weeks late. Increasing by ₹800/month ensures you hit the August 15 deadline.",
     impact: "+₹800/month",
     actionLabel: "Adjust contribution",
+    actionHref: "/savings",
   },
   {
     id: "3",
@@ -142,6 +145,7 @@ export const mockAIInsights: AIInsight[] = [
     description: "You've spent ₹8,200 on food this month — 34% above your monthly average of ₹6,100. Most of this increase is from late-night Swiggy orders.",
     impact: "+₹2,100 vs avg",
     actionLabel: "See breakdown",
+    actionHref: "/analytics",
   },
   {
     id: "4",
@@ -150,6 +154,7 @@ export const mockAIInsights: AIInsight[] = [
     description: "You've had ₹18,000 sitting in your savings account for 45 days earning 3.5%. A liquid mutual fund could earn 6–7% with the same flexibility.",
     impact: "₹585 extra/year",
     actionLabel: "Explore options",
+    actionHref: "/investments",
   },
 ];
 

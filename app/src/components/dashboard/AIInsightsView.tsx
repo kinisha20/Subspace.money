@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 import { mockAIInsights } from "@/lib/mock-data";
-import { Sparkles, Send, AlertCircle, Lightbulb, Shield, Target, TrendingUp, ChevronRight } from "lucide-react";
+import { Sparkles, Send, AlertCircle, Lightbulb, Shield, Target, ChevronRight } from "lucide-react";
 
 const insightConfig = {
   save:        { icon: Target,       bg: "bg-green-50",  border: "border-green-100", iconColor: "text-green-600",  label: "Save money"    },
@@ -67,9 +68,12 @@ export function AIInsightsView() {
                   <span className="text-[12px] font-bold text-teal-600 flex-shrink-0">{insight.impact}</span>
                 </div>
                 <p className="text-[13px] text-[#6B6B6B] leading-relaxed mb-4">{insight.description}</p>
-                <button className="flex items-center gap-1.5 text-[12px] font-semibold text-teal-500 hover:text-teal-600 transition-colors">
+                <Link
+                  href={insight.actionHref}
+                  className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-teal-500 hover:text-teal-600 transition-colors no-underline"
+                >
                   {insight.actionLabel} <ChevronRight size={12} aria-hidden="true" />
-                </button>
+                </Link>
               </div>
             );
           })}
