@@ -1,8 +1,11 @@
 "use client";
+import { useState, useEffect } from "react";
+import Link from "next/link";
 import { mockInvestments } from "@/lib/mock-data";
 import { formatINR } from "@/lib/design-tokens";
 import { TrendingUp, TrendingDown } from "lucide-react";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
+import { getUser } from "@/lib/user-store";
 
 // Brand-styled logo config keyed by holding name
 const logoConfig: Record<string, { bg: string; label: string }> = {
@@ -37,6 +40,12 @@ function HoldingLogo({ name, fallbackColor }: { name: string; fallbackColor: str
 }
 
 export function InvestmentsView() {
+  const [isPro, setIsPro] = useState(true);
+
+  useEffect(() => {
+    setIsPro(getUser()?.plan === "pro");
+  }, []);
+
   const totalInvested = mockInvestments.reduce((s, i) => s + i.invested, 0);
   const totalCurrent  = mockInvestments.reduce((s, i) => s + i.current,  0);
   const totalReturns  = totalCurrent - totalInvested;
@@ -50,6 +59,31 @@ export function InvestmentsView() {
     fontFamily: "'Satoshi','DM Sans',sans-serif",
     fontSize: "13px",
   };
+
+  if (!isPro) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-6">
+        <div className="w-16 h-16 rounded-2xl bg-[#1A3C2A] flex items-center justify-center mb-5">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 3L17 10H24L18.5 14.5L20.5 22L14 17.5L7.5 22L9.5 14.5L4 10H11L14 3Z" fill="#7CCF5C"/></svg>
+        </div>
+        <h2 style={{fontFamily:"'Instrument Serif',serif"}} className="text-[28px] text-[#121212] tracking-tight mb-3">Investment Tracking is Pro only</h2>
+        <p className="text-[15px] text-[#6B6B6B] max-w-[400px] leading-relaxed mb-6">Track your mutual funds, stocks, FDs and gold holdings with real-time performance. Upgrade to Pro to unlock portfolio analytics.</p>
+        <div className="bg-[#F5EFE7] border border-[#E5E0D5] rounded-2xl p-5 mb-6 text-left max-w-[380px] w-full">
+          <p className="text-[12px] font-bold text-[#1A3C2A] uppercase tracking-wider mb-3">What you get with Pro</p>
+          {["Unlimited investment tracking","Portfolio performance charts","Returns & allocation analytics","AI-powered investment insights","Mutual fund & stock tracking"].map(f => (
+            <div key={f} className="flex items-center gap-2 mb-2">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6.5" fill="#7CCF5C" fillOpacity="0.2"/><path d="M4 7l2 2 4-4" stroke="#1A3C2A" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              <span className="text-[13px] text-[#374151]">{f}</span>
+            </div>
+          ))}
+        </div>
+        <Link href="/login" className="inline-flex items-center gap-2 bg-[#1A3C2A] text-white text-[14px] font-semibold rounded-full px-8 py-3.5 no-underline hover:bg-[#0F2018] transition-colors">
+          Upgrade to Pro — ₹190/month
+        </Link>
+        <p className="text-[12px] text-[#9CA3AF] mt-3">Or <Link href="/login" className="text-[#0F5F56] no-underline hover:underline">sign in with Pro demo account</Link></p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-5 page-enter">

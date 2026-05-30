@@ -1,9 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Link from "next/link";
 import { mockSavingsGoals } from "@/lib/mock-data";
 import { formatINR } from "@/lib/design-tokens";
 import { Plus, Target, X } from "lucide-react";
 import { toast } from "sonner";
+import { getUser } from "@/lib/user-store";
 
 interface GoalForm {
   name: string;
@@ -20,8 +22,23 @@ export function SavingsView() {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [form, setForm]           = useState<GoalForm>(EMPTY_FORM);
+  const [isPro, setIsPro]         = useState(true);
 
-  function openModal()  { setForm(EMPTY_FORM); setModalOpen(true);  }
+  useEffect(() => {
+    setIsPro(getUser()?.plan === "pro");
+  }, []);
+
+  const displayedGoals = isPro ? mockSavingsGoals : mockSavingsGoals.slice(0, 2);
+  const atLimit        = !isPro && mockSavingsGoals.length >= 2;
+
+  function openModal()  {
+    if (atLimit) {
+      toast.info("Upgrade to Pro to add more savings goals");
+      return;
+    }
+    setForm(EMPTY_FORM);
+    setModalOpen(true);
+  }
   function closeModal() { setModalOpen(false); }
 
   function handleCreate() {
@@ -49,7 +66,7 @@ export function SavingsView() {
 
         {/* Goals grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {mockSavingsGoals.map((goal) => {
+          {displayedGoals.map((goal) => {
             const pct = Math.round((goal.current / goal.target) * 100);
             const remaining = goal.target - goal.current;
             return (
@@ -92,19 +109,38 @@ export function SavingsView() {
             );
           })}
 
+          {/* Upgrade card for free plan */}
+          {!isPro && mockSavingsGoals.length > 2 && (
+            <div className="border-2 border-dashed border-[#7CCF5C]/40 rounded-[20px] p-6 flex items-center justify-between bg-[#7CCF5C]/5">
+              <div>
+                <p className="text-[13px] font-bold text-[#1A3C2A] mb-1">{mockSavingsGoals.length - 2} more goals locked</p>
+                <p className="text-[12px] text-[#6B6B6B]">Free plan allows 2 goals. Upgrade to set unlimited savings goals.</p>
+              </div>
+              <Link href="/login" className="text-[12px] font-bold bg-[#1A3C2A] text-white rounded-full px-4 py-2 no-underline flex-shrink-0 ml-4">Upgrade</Link>
+            </div>
+          )}
+
           {/* Add goal – premium dashed card */}
           <button
             id="new-savings-goal-btn"
             onClick={openModal}
-            className="group border-2 border-dashed border-[#E5E7EB] rounded-[20px] p-8 flex flex-col items-center justify-center gap-3 text-[#9CA3AF] hover:border-teal-400 hover:text-teal-500 hover:bg-teal-50/40 transition-all duration-300 min-h-[220px]"
-            aria-label="Add new savings goal"
+            className={`group border-2 border-dashed rounded-[20px] p-8 flex flex-col items-center justify-center gap-3 transition-all duration-300 min-h-[220px] ${
+              atLimit
+                ? "border-[#7CCF5C]/40 text-[#1A3C2A] hover:border-[#7CCF5C] hover:bg-[#7CCF5C]/5"
+                : "border-[#E5E7EB] text-[#9CA3AF] hover:border-teal-400 hover:text-teal-500 hover:bg-teal-50/40"
+            }`}
+            aria-label={atLimit ? "Upgrade to add more savings goals" : "Add new savings goal"}
           >
             <div className="w-12 h-12 rounded-2xl border-2 border-dashed border-current flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <Plus size={22} aria-hidden="true" />
+              {atLimit ? (
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="5" y="10" width="12" height="9" rx="2" stroke="currentColor" strokeWidth="1.6"/><path d="M8 10V7a3 3 0 016 0v3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>
+              ) : (
+                <Plus size={22} aria-hidden="true" />
+              )}
             </div>
             <div className="text-center">
-              <p className="text-[14px] font-bold">New savings goal</p>
-              <p className="text-[12px] opacity-70 mt-0.5">Track your next milestone</p>
+              <p className="text-[14px] font-bold">{atLimit ? "Upgrade to add more" : "New savings goal"}</p>
+              <p className="text-[12px] opacity-70 mt-0.5">{atLimit ? "Free plan: 2 goals max" : "Track your next milestone"}</p>
             </div>
           </button>
         </div>

@@ -1,8 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { mockAIInsights } from "@/lib/mock-data";
 import { Sparkles, Send, AlertCircle, Lightbulb, Shield, Target, ChevronRight } from "lucide-react";
+import { getUser } from "@/lib/user-store";
 
 const insightConfig = {
   save:        { icon: Target,       bg: "bg-green-50",  border: "border-green-100", iconColor: "text-green-600",  label: "Save money"    },
@@ -12,20 +13,25 @@ const insightConfig = {
 };
 
 const mockChatResponses: Record<string, string> = {
-  default: "Based on your spending patterns, I recommend focusing on reducing subscription costs first. You have 3 unused subscriptions costing \u20b93,569/month.",
-  budget:  "Your optimal monthly budget breakdown: Food \u20b96,000, Transport \u20b91,500, Entertainment \u20b92,500, Savings \u20b922,000, Utilities \u20b92,500. This leaves a buffer of \u20b96,500.",
-  savings: "To hit your Goa goal by August 15, increase your monthly contribution by \u20b9800. I'll automatically adjust your savings transfer on the 1st of every month.",
+  default: "Based on your spending patterns, I recommend focusing on reducing subscription costs first. You have 3 unused subscriptions costing ₹3,569/month.",
+  budget:  "Your optimal monthly budget breakdown: Food ₹6,000, Transport ₹1,500, Entertainment ₹2,500, Savings ₹22,000, Utilities ₹2,500. This leaves a buffer of ₹6,500.",
+  savings: "To hit your Goa goal by August 15, increase your monthly contribution by ₹800. I'll automatically adjust your savings transfer on the 1st of every month.",
   invest:  "Your current SIP returns average 19% annually. Consider adding a mid-cap fund to diversify. HDFC Midcap Opportunities has delivered 24% CAGR over 5 years.",
 };
 
 type ChatMessage = { role: "user" | "ai"; content: string };
 
 export function AIInsightsView() {
+  const [isPro, setIsPro] = useState(true);
   const [messages, setMessages] = useState<ChatMessage[]>([
     { role: "ai", content: "Hello! I'm your Subspace AI assistant. I've analyzed your spending patterns for May 2026. Ask me anything about your finances." },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setIsPro(getUser()?.plan === "pro");
+  }, []);
 
   const handleSend = () => {
     if (!input.trim()) return;
@@ -45,6 +51,10 @@ export function AIInsightsView() {
     }, 1200);
   };
 
+  // For free plan: show first 2 insights + 2 locked slots; hide chat
+  const visibleInsights = isPro ? mockAIInsights : mockAIInsights.slice(0, 2);
+  const lockedCount     = isPro ? 0 : Math.max(0, mockAIInsights.length - 2);
+
   return (
     <div className="space-y-5 page-enter">
 
@@ -52,7 +62,7 @@ export function AIInsightsView() {
       <div>
         <h2 style={{ fontFamily: "'Instrument Serif', serif" }} className="text-[20px] text-[#121212] tracking-tight mb-4">Active insights</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {mockAIInsights.map((insight) => {
+          {visibleInsights.map((insight) => {
             const cfg = insightConfig[insight.type];
             const Icon = cfg.icon;
             return (
@@ -77,83 +87,103 @@ export function AIInsightsView() {
               </div>
             );
           })}
+
+          {/* Locked insight slots for free plan */}
+          {!isPro && Array.from({ length: lockedCount }).map((_, i) => (
+            <div key={`locked-${i}`} className="bg-[#F9F7F4] border border-[#E5E0D5] border-dashed rounded-[20px] p-5 flex flex-col items-center justify-center min-h-[160px] opacity-70">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="mb-2"><rect x="4" y="9" width="12" height="9" rx="2" stroke="#9CA3AF" strokeWidth="1.6"/><path d="M7 9V6a3 3 0 016 0v3" stroke="#9CA3AF" strokeWidth="1.6" strokeLinecap="round"/></svg>
+              <p className="text-[12px] font-semibold text-[#9CA3AF] text-center">Pro insight locked</p>
+              <p className="text-[11px] text-[#9CA3AF] text-center mt-1">Upgrade to unlock all insights</p>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* AI Chat */}
-      <div className="bg-[#0F2018] rounded-[20px] border border-white/5 overflow-hidden">
-        <div className="flex items-center gap-3 px-5 py-4 border-b border-white/5">
-          <div className="w-8 h-8 rounded-xl bg-[#7CCF5C]/15 flex items-center justify-center">
-            <Sparkles size={15} className="text-[#7CCF5C]" aria-hidden="true" />
-          </div>
-          <div>
-            <h2 style={{ fontFamily: "'Instrument Serif', serif" }} className="text-[16px] text-white tracking-tight">AI Finance Assistant</h2>
-            <p className="text-[11px] text-white/40">Ask anything about your money</p>
-          </div>
-        </div>
-
-        {/* Messages */}
-        <div className="h-[320px] overflow-y-auto px-5 py-4 space-y-3 no-scrollbar">
-          {messages.map((msg, i) => (
-            <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-              <div
-                className={`max-w-[85%] rounded-[14px] px-4 py-3 text-[13px] leading-relaxed ${
-                  msg.role === "user"
-                    ? "bg-[#7CCF5C] text-[#121212] font-medium"
-                    : "bg-white/6 text-white/80 border border-white/6"
-                }`}
-              >
-                {msg.content}
-              </div>
+      {/* AI Chat — Pro only */}
+      {isPro ? (
+        <div className="bg-[#0F2018] rounded-[20px] border border-white/5 overflow-hidden">
+          <div className="flex items-center gap-3 px-5 py-4 border-b border-white/5">
+            <div className="w-8 h-8 rounded-xl bg-[#7CCF5C]/15 flex items-center justify-center">
+              <Sparkles size={15} className="text-[#7CCF5C]" aria-hidden="true" />
             </div>
-          ))}
-          {loading && (
-            <div className="flex justify-start">
-              <div className="bg-white/6 border border-white/6 rounded-[14px] px-4 py-3">
-                <div className="flex gap-1" aria-label="AI is typing">
-                  {[0,1,2].map(i => (
-                    <div key={i} className="w-1.5 h-1.5 bg-white/40 rounded-full animate-pulse" style={{ animationDelay: `${i * 0.15}s` }} />
-                  ))}
+            <div>
+              <h2 style={{ fontFamily: "'Instrument Serif', serif" }} className="text-[16px] text-white tracking-tight">AI Finance Assistant</h2>
+              <p className="text-[11px] text-white/40">Ask anything about your money</p>
+            </div>
+          </div>
+
+          {/* Messages */}
+          <div className="h-[320px] overflow-y-auto px-5 py-4 space-y-3 no-scrollbar">
+            {messages.map((msg, i) => (
+              <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+                <div
+                  className={`max-w-[85%] rounded-[14px] px-4 py-3 text-[13px] leading-relaxed ${
+                    msg.role === "user"
+                      ? "bg-[#7CCF5C] text-[#121212] font-medium"
+                      : "bg-white/6 text-white/80 border border-white/6"
+                  }`}
+                >
+                  {msg.content}
                 </div>
               </div>
-            </div>
-          )}
-        </div>
+            ))}
+            {loading && (
+              <div className="flex justify-start">
+                <div className="bg-white/6 border border-white/6 rounded-[14px] px-4 py-3">
+                  <div className="flex gap-1" aria-label="AI is typing">
+                    {[0,1,2].map(i => (
+                      <div key={i} className="w-1.5 h-1.5 bg-white/40 rounded-full animate-pulse" style={{ animationDelay: `${i * 0.15}s` }} />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
 
-        {/* Quick prompts */}
-        <div className="flex gap-2 px-5 pb-3 overflow-x-auto no-scrollbar">
-          {["Optimize my budget", "Review savings goals", "Best investment for me"].map((p) => (
+          {/* Quick prompts */}
+          <div className="flex gap-2 px-5 pb-3 overflow-x-auto no-scrollbar">
+            {["Optimize my budget", "Review savings goals", "Best investment for me"].map((p) => (
+              <button
+                key={p}
+                onClick={() => { setInput(p); }}
+                className="flex-shrink-0 px-3 py-1.5 rounded-full bg-white/6 border border-white/8 text-[11px] font-semibold text-white/60 hover:bg-white/10 hover:text-white transition-all"
+              >
+                {p}
+              </button>
+            ))}
+          </div>
+
+          {/* Input */}
+          <div className="flex items-center gap-3 px-5 pb-5">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleSend()}
+              placeholder="Ask about your finances..."
+              className="flex-1 bg-white border border-white/20 rounded-xl px-4 py-3 text-[13px] text-[#121212] font-medium placeholder:text-[#9CA3AF] outline-none focus:border-[#7CCF5C] focus:ring-2 focus:ring-[#7CCF5C]/20 transition-colors"
+              aria-label="Message AI assistant"
+            />
             <button
-              key={p}
-              onClick={() => { setInput(p); }}
-              className="flex-shrink-0 px-3 py-1.5 rounded-full bg-white/6 border border-white/8 text-[11px] font-semibold text-white/60 hover:bg-white/10 hover:text-white transition-all"
+              onClick={handleSend}
+              disabled={!input.trim() || loading}
+              className="w-10 h-10 rounded-xl bg-[#7CCF5C] flex items-center justify-center flex-shrink-0 hover:bg-[#5CB840] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              aria-label="Send message"
             >
-              {p}
+              <Send size={16} className="text-[#121212]" aria-hidden="true" />
             </button>
-          ))}
+          </div>
         </div>
-
-        {/* Input */}
-        <div className="flex items-center gap-3 px-5 pb-5">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSend()}
-            placeholder="Ask about your finances..."
-            className="flex-1 bg-white border border-white/20 rounded-xl px-4 py-3 text-[13px] text-[#121212] font-medium placeholder:text-[#9CA3AF] outline-none focus:border-[#7CCF5C] focus:ring-2 focus:ring-[#7CCF5C]/20 transition-colors"
-            aria-label="Message AI assistant"
-          />
-          <button
-            onClick={handleSend}
-            disabled={!input.trim() || loading}
-            className="w-10 h-10 rounded-xl bg-[#7CCF5C] flex items-center justify-center flex-shrink-0 hover:bg-[#5CB840] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-            aria-label="Send message"
-          >
-            <Send size={16} className="text-[#121212]" aria-hidden="true" />
-          </button>
+      ) : (
+        <div className="bg-[#0F2018] rounded-[20px] border border-white/5 p-8 flex flex-col items-center justify-center text-center">
+          <div className="w-12 h-12 rounded-xl bg-[#7CCF5C]/15 flex items-center justify-center mb-4">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="4" y="9" width="12" height="9" rx="2" stroke="#7CCF5C" strokeWidth="1.6"/><path d="M7 9V6a3 3 0 016 0v3" stroke="#7CCF5C" strokeWidth="1.6" strokeLinecap="round"/></svg>
+          </div>
+          <h3 style={{fontFamily:"'Instrument Serif',serif"}} className="text-[20px] text-white mb-2">AI Finance Assistant</h3>
+          <p className="text-[13px] text-white/50 max-w-[300px] leading-relaxed mb-5">Ask unlimited questions about your finances, get personalized recommendations, and let AI optimize your budget — Pro only.</p>
+          <Link href="/login" className="inline-flex items-center bg-[#7CCF5C] text-[#121212] text-[13px] font-bold rounded-full px-6 py-2.5 no-underline hover:brightness-110 transition-all">Upgrade to Pro</Link>
         </div>
-      </div>
+      )}
     </div>
   );
 }

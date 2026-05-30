@@ -1,8 +1,11 @@
 "use client";
+import { useState, useEffect } from "react";
+import Link from "next/link";
 import { mockGroups } from "@/lib/mock-data";
 import { formatINR } from "@/lib/design-tokens";
 import { Plus, CheckCircle2, Clock, Bell } from "lucide-react";
 import { toast } from "sonner";
+import { getUser } from "@/lib/user-store";
 
 // Gradient / solid color map keyed by first letter of member name
 const AVATAR_COLORS: Record<string, string> = {
@@ -22,6 +25,14 @@ function memberAvatarStyle(initials: string): React.CSSProperties {
 }
 
 export function GroupFinanceView() {
+  const [isPro, setIsPro] = useState(true);
+
+  useEffect(() => {
+    setIsPro(getUser()?.plan === "pro");
+  }, []);
+
+  const displayedGroups = isPro ? mockGroups : mockGroups.slice(0, 1);
+
   const totalOwed = mockGroups.reduce((s, g) => {
     return s + g.members.filter(m => !m.paid && m.name !== "Aryan").reduce((ms, m) => ms + m.owes, 0);
   }, 0);
@@ -44,7 +55,7 @@ export function GroupFinanceView() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {mockGroups.map((group) => (
+        {displayedGroups.map((group) => (
           <div key={group.id} className="bg-white rounded-[20px] border border-[#E5E7EB] p-5">
             <div className="flex items-start justify-between mb-4">
               <div>
@@ -101,6 +112,17 @@ export function GroupFinanceView() {
             </div>
           </div>
         ))}
+
+        {/* Upgrade card for free plan */}
+        {!isPro && mockGroups.length > 1 && (
+          <div className="border-2 border-dashed border-[#7CCF5C]/40 rounded-[20px] p-6 flex items-center justify-between bg-[#7CCF5C]/5">
+            <div>
+              <p className="text-[13px] font-bold text-[#1A3C2A] mb-1">{mockGroups.length - 1} more group{mockGroups.length - 1 > 1 ? "s" : ""} locked</p>
+              <p className="text-[12px] text-[#6B6B6B]">Free plan allows 1 group. Upgrade to manage unlimited groups.</p>
+            </div>
+            <Link href="/login" className="text-[12px] font-bold bg-[#1A3C2A] text-white rounded-full px-4 py-2 no-underline flex-shrink-0 ml-4">Upgrade</Link>
+          </div>
+        )}
 
         {/* Create group dashed card */}
         <button

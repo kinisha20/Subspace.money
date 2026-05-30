@@ -1,13 +1,22 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Link from "next/link";
 import { mockSubscriptions } from "@/lib/mock-data";
 import { formatINR } from "@/lib/design-tokens";
 import { Plus, AlertTriangle, CheckCircle2, Pause } from "lucide-react";
 import { toast } from "sonner";
 import { BrandLogo } from "@/components/ui/BrandLogo";
+import { getUser } from "@/lib/user-store";
 
 export function SubscriptionsView() {
   const [subs, setSubs] = useState(mockSubscriptions);
+  const [isPro, setIsPro] = useState(true);
+
+  useEffect(() => {
+    setIsPro(getUser()?.plan === "pro");
+  }, []);
+
+  const displayedSubs = isPro ? subs : subs.slice(0, 5);
 
   const total = subs.filter(s => s.status === "active").reduce((sum, s) => {
     if (s.cycle === "yearly") return sum + s.amount / 12;
@@ -29,7 +38,7 @@ export function SubscriptionsView() {
         {
           [
             { label: "Monthly Total",   value: formatINR(Math.round(total)) },
-            { label: "Active Plans",    value: subs.filter(s => s.status === "active").length.toString() },
+            { label: "Active Plans",    value: isPro ? subs.filter(s => s.status === "active").length.toString() : "5 max" },
             { label: "Unused Plans",    value: unused.length.toString() },
             { label: "Annual Cost",     value: formatINR(Math.round(total * 12)) },
           ].map(s => (
@@ -56,7 +65,7 @@ export function SubscriptionsView() {
 
       {/* Subscriptions grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-        {subs.map((sub) => (
+        {displayedSubs.map((sub) => (
           <div
             key={sub.id}
             className={`bg-white rounded-[20px] border p-5 transition-all duration-200 ${
@@ -111,6 +120,17 @@ export function SubscriptionsView() {
             </div>
           </div>
         ))}
+
+        {/* Upgrade banner for free plan when more subs exist */}
+        {!isPro && mockSubscriptions.length > 5 && (
+          <div className="border-2 border-dashed border-[#7CCF5C]/40 rounded-[20px] p-5 flex items-center justify-between bg-[#7CCF5C]/5">
+            <div>
+              <p className="text-[13px] font-bold text-[#1A3C2A] mb-1">{mockSubscriptions.length - 5} more subscriptions locked</p>
+              <p className="text-[12px] text-[#6B6B6B]">Free plan is limited to 5. Upgrade to track unlimited subscriptions.</p>
+            </div>
+            <Link href="/login" className="text-[12px] font-bold bg-[#1A3C2A] text-white rounded-full px-4 py-2 no-underline flex-shrink-0 ml-4">Upgrade</Link>
+          </div>
+        )}
 
         {/* Add new */}
         <button

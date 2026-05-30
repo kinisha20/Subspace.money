@@ -18,8 +18,8 @@ import {
   ChevronLeft,
   ChevronRight,
   LogOut,
-  Menu,
 } from "lucide-react";
+import { getUser, logoutUser, setDefaultUser } from "@/lib/user-store";
 
 const navItems = [
   { href: "/dashboard",      label: "Dashboard",    icon: LayoutDashboard },
@@ -47,8 +47,16 @@ export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
   const router   = useRouter();
   const [collapsed, setCollapsed] = useState(false);
   const overlayRef = useRef<HTMLDivElement>(null);
+  const [user, setUser] = useState<{ name: string; initials: string; plan: string } | null>(null);
+
+  useEffect(() => {
+    setDefaultUser();
+    const u = getUser();
+    if (u) setUser({ name: u.name, initials: u.initials, plan: u.plan });
+  }, []);
 
   const handleLogout = () => {
+    logoutUser();
     router.push("/");
   };
 
@@ -69,6 +77,10 @@ export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
   }, [onMobileClose]);
 
   const isActive = (href: string) => pathname === href;
+
+  const displayName     = user?.name     ?? "Aryan Gupta";
+  const displayInitials = user?.initials ?? "AG";
+  const isPro           = user?.plan === "pro";
 
   return (
     <>
@@ -193,11 +205,20 @@ export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
               title="Log out"
             >
               <div className="w-8 h-8 rounded-full bg-teal-500 flex items-center justify-center flex-shrink-0" aria-hidden="true">
-                <span className="text-xs font-bold text-white">A</span>
+                <span className="text-xs font-bold text-white">{displayInitials.charAt(0)}</span>
               </div>
               <div className="flex-1 min-w-0">
-                <div className="text-[13px] font-semibold text-[#121212] truncate group-hover:text-red-500 transition-colors">Aryan Gupta</div>
-                <div className="text-[11px] text-[#6B6B6B] truncate group-hover:text-red-400 transition-colors">Pro plan</div>
+                <div className="text-[13px] font-semibold text-[#121212] truncate group-hover:text-red-500 transition-colors">{displayName}</div>
+                <div className={`text-[11px] truncate group-hover:text-red-400 transition-colors flex items-center gap-1 ${isPro ? "text-[#6B6B6B]" : "text-[#9CA3AF]"}`}>
+                  {isPro ? (
+                    <>
+                      <span className="text-[10px]">★</span>
+                      <span>Pro plan</span>
+                    </>
+                  ) : (
+                    <span>Free plan</span>
+                  )}
+                </div>
               </div>
               <LogOut size={14} className="text-[#9CA3AF] flex-shrink-0 group-hover:text-red-500 transition-colors" aria-hidden="true" />
             </button>
@@ -208,7 +229,7 @@ export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
               title="Log out"
               aria-label="Log out"
             >
-              <span className="text-xs font-bold text-white">A</span>
+              <span className="text-xs font-bold text-white">{displayInitials.charAt(0)}</span>
             </button>
           )}
         </div>

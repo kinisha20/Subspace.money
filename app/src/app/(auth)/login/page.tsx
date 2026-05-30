@@ -1,57 +1,65 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { loginUser } from "@/lib/user-store";
+
+const ACCOUNTS = [
+  { label: "Pro plan", email: "demo@subspace.money", password: "demo1234", color: "#7CCF5C", textColor: "#1A3C2A", badge: "⭐ Pro" },
+  { label: "Free plan", email: "free@subspace.money", password: "free1234", color: "#E5E7EB", textColor: "#6B6B6B", badge: "Free" },
+];
 
 export default function LoginPage() {
+  const router = useRouter();
+  const [email, setEmail]       = useState("demo@subspace.money");
+  const [password, setPassword] = useState("demo1234");
+  const [error, setError]       = useState("");
+  const [loading, setLoading]   = useState(false);
+
+  const fillAccount = (acc: typeof ACCOUNTS[0]) => {
+    setEmail(acc.email);
+    setPassword(acc.password);
+    setError("");
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    setTimeout(() => {
+      const user = loginUser(email, password);
+      if (!user) {
+        setError("Invalid email or password. Use one of the demo accounts below.");
+        setLoading(false);
+        return;
+      }
+      router.push("/dashboard");
+    }, 600);
+  };
+
   return (
-    <div
-      className="min-h-screen flex"
-      style={{ background: "#F5EFE7" }}
-    >
+    <div className="min-h-screen flex" style={{ background: "#F5EFE7" }}>
+
       {/* Left: Branding */}
-      <div
-        className="hidden lg:flex flex-col justify-between w-[480px] flex-shrink-0 p-12"
-        style={{ background: "#0F5F56" }}
-      >
-        <Link
-          href="/"
-          style={{ fontFamily: "'Instrument Serif', serif" }}
-          className="text-[20px] text-white no-underline"
-        >
+      <div className="hidden lg:flex flex-col justify-between w-[480px] flex-shrink-0 p-12" style={{ background: "#0F5F56" }}>
+        <Link href="/" style={{ fontFamily: "'Instrument Serif', serif" }} className="text-[20px] text-white no-underline">
           Subspace.money
         </Link>
-
         <div>
           <blockquote>
-            <p
-              style={{ fontFamily: "'Instrument Serif', serif" }}
-              className="text-[28px] text-white leading-snug tracking-tight mb-6"
-            >
+            <p style={{ fontFamily: "'Instrument Serif', serif" }} className="text-[28px] text-white leading-snug tracking-tight mb-6">
               &ldquo;I had no idea I was spending &#8377;4,800 a month on subscriptions I barely used. Subspace found it in two minutes.&rdquo;
             </p>
-            <footer className="text-[14px] text-white/50">
-              Arjun M. — Software engineer, Bengaluru
-            </footer>
+            <footer className="text-[14px] text-white/50">Arjun M. — Software engineer, Bengaluru</footer>
           </blockquote>
         </div>
-
         <div className="flex items-center gap-4">
           <div className="flex">
             {["A","R","S","K","P"].map((init, i) => (
-              <div
-                key={i}
-                className="w-8 h-8 rounded-full border-2 flex items-center justify-center text-[11px] font-bold text-white"
-                style={{
-                  background: ["#1F5C4A","#2A6B58","#3D7A6A","#4A8878","#2A5248"][i],
-                  borderColor: "#0F5F56",
-                  marginLeft: i === 0 ? 0 : -8,
-                  zIndex: 5 - i,
-                  position: "relative",
-                }}
-                aria-hidden="true"
-              >
-                {init}
-              </div>
+              <div key={i} className="w-8 h-8 rounded-full border-2 flex items-center justify-center text-[11px] font-bold text-white"
+                style={{ background: ["#1F5C4A","#2A6B58","#3D7A6A","#4A8878","#2A5248"][i], borderColor: "#0F5F56", marginLeft: i === 0 ? 0 : -8, zIndex: 5-i, position: "relative" }}
+                aria-hidden="true">{init}</div>
             ))}
           </div>
           <p className="text-[13px] text-white/60">100+ users tracking their finances</p>
@@ -60,98 +68,92 @@ export default function LoginPage() {
 
       {/* Right: Login form */}
       <div className="flex-1 flex items-center justify-center p-8">
-        <div className="w-full max-w-[400px]">
+        <div className="w-full max-w-[420px]">
 
           {/* Mobile logo */}
-          <Link
-            href="/"
-            style={{ fontFamily: "'Instrument Serif', serif" }}
-            className="text-[20px] text-[#0F5F56] no-underline mb-8 block lg:hidden"
-          >
+          <Link href="/" style={{ fontFamily: "'Instrument Serif', serif" }} className="text-[20px] text-[#0F5F56] no-underline mb-8 block lg:hidden">
             Subspace.money
           </Link>
 
-          <h1
-            style={{ fontFamily: "'Instrument Serif', serif" }}
-            className="text-[32px] text-[#121212] tracking-tight mb-2"
-          >
+          <h1 style={{ fontFamily: "'Instrument Serif', serif" }} className="text-[32px] text-[#121212] tracking-tight mb-2">
             Welcome back
           </h1>
-          <p className="text-[15px] text-[#6B6B6B] mb-8">
-            Sign in to continue to your dashboard.
-          </p>
+          <p className="text-[15px] text-[#6B6B6B] mb-6">Sign in to continue to your dashboard.</p>
 
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              window.location.href = "/dashboard";
-            }}
-            className="space-y-4"
-            aria-label="Login form"
-          >
+          {/* Demo account switcher */}
+          <div className="bg-white border border-[#E5E7EB] rounded-2xl p-4 mb-6">
+            <p className="text-[11px] font-bold text-[#9CA3AF] uppercase tracking-wider mb-3">Try a demo account</p>
+            <div className="grid grid-cols-2 gap-2">
+              {ACCOUNTS.map((acc) => (
+                <button
+                  key={acc.email}
+                  type="button"
+                  onClick={() => fillAccount(acc)}
+                  className={`flex flex-col items-start gap-1 rounded-xl px-3 py-2.5 border-2 transition-all text-left ${
+                    email === acc.email
+                      ? "border-[#0F5F56] bg-[#0F5F56]/5"
+                      : "border-[#E5E7EB] hover:border-[#0F5F56]/40"
+                  }`}
+                >
+                  <span className={`text-[10px] font-bold rounded-full px-2 py-0.5`}
+                    style={{ background: acc.color, color: acc.textColor }}>{acc.badge}</span>
+                  <span className="text-[12px] font-semibold text-[#121212]">{acc.label}</span>
+                  <span className="text-[10px] text-[#9CA3AF] truncate w-full">{acc.email}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-4" aria-label="Login form">
             <div>
-              <label
-                htmlFor="login-email"
-                className="block text-[12px] font-bold text-[#6B6B6B] uppercase tracking-wider mb-1.5"
-              >
-                Email
-              </label>
+              <label htmlFor="login-email" className="block text-[12px] font-bold text-[#6B6B6B] uppercase tracking-wider mb-1.5">Email</label>
               <input
                 id="login-email"
                 type="email"
                 required
-                placeholder="you@example.com"
-                defaultValue="demo@subspace.money"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
                 className="w-full bg-white border border-[#E5E7EB] rounded-xl px-4 py-3 text-[14px] text-[#121212] outline-none focus:border-[#0F5F56] focus:ring-2 focus:ring-[#0F5F56]/15 transition-all placeholder:text-[#9CA3AF]"
                 autoComplete="email"
               />
             </div>
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <label
-                  htmlFor="login-password"
-                  className="block text-[12px] font-bold text-[#6B6B6B] uppercase tracking-wider"
-                >
-                  Password
-                </label>
-                <button
-                  type="button"
-                  className="text-[12px] font-semibold text-[#0F5F56] hover:text-[#083B35] transition-colors"
-                >
-                  Forgot?
-                </button>
+                <label htmlFor="login-password" className="block text-[12px] font-bold text-[#6B6B6B] uppercase tracking-wider">Password</label>
+                <button type="button" className="text-[12px] font-semibold text-[#0F5F56] hover:text-[#083B35] transition-colors">Forgot?</button>
               </div>
               <input
                 id="login-password"
                 type="password"
                 required
-                placeholder="Enter your password"
-                defaultValue="demo1234"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
                 className="w-full bg-white border border-[#E5E7EB] rounded-xl px-4 py-3 text-[14px] text-[#121212] outline-none focus:border-[#0F5F56] focus:ring-2 focus:ring-[#0F5F56]/15 transition-all placeholder:text-[#9CA3AF]"
                 autoComplete="current-password"
               />
             </div>
 
+            {error && (
+              <p className="text-[13px] text-red-500 bg-red-50 border border-red-100 rounded-xl px-4 py-2.5">{error}</p>
+            )}
+
             <button
               type="submit"
-              className="w-full bg-[#0F5F56] text-white text-[14px] font-semibold rounded-full py-3.5 hover:bg-[#083B35] transition-all duration-200 mt-2"
+              disabled={loading}
+              className="w-full bg-[#0F5F56] text-white text-[14px] font-semibold rounded-full py-3.5 hover:bg-[#083B35] disabled:opacity-60 transition-all duration-200 mt-2"
               style={{ boxShadow: "0 4px 12px rgba(15,95,86,0.3)" }}
             >
-              Sign in
+              {loading ? "Signing in…" : "Sign in"}
             </button>
 
             <div className="relative my-5">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-[#E5E7EB]" />
-              </div>
-              <div className="relative flex justify-center">
-                <span className="px-3 bg-[#F5EFE7] text-[12px] text-[#9CA3AF]">or continue with</span>
-              </div>
+              <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-[#E5E7EB]" /></div>
+              <div className="relative flex justify-center"><span className="px-3 bg-[#F5EFE7] text-[12px] text-[#9CA3AF]">or continue with</span></div>
             </div>
 
             <button
               type="button"
-              onClick={() => (window.location.href = "/dashboard")}
+              onClick={() => { loginUser("demo@subspace.money", "demo1234"); router.push("/dashboard"); }}
               className="w-full bg-white border border-[#E5E7EB] text-[14px] font-semibold text-[#121212] rounded-full py-3 hover:bg-[#F5EFE7] transition-all duration-200 flex items-center justify-center gap-2"
             >
               <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
@@ -166,17 +168,8 @@ export default function LoginPage() {
 
           <p className="text-center text-[13px] text-[#9CA3AF] mt-6">
             No account?{" "}
-            <Link href="/signup" className="font-semibold text-[#0F5F56] hover:text-[#083B35] no-underline transition-colors">
-              Start for free
-            </Link>
+            <Link href="/signup" className="font-semibold text-[#0F5F56] hover:text-[#083B35] no-underline transition-colors">Start for free</Link>
           </p>
-
-          {/* Demo note */}
-          <div className="mt-6 p-3 bg-[#7CCF5C]/10 border border-[#7CCF5C]/20 rounded-xl text-center">
-            <p className="text-[12px] text-[#5CB840] font-semibold">
-              Demo mode — click Sign in to explore the dashboard
-            </p>
-          </div>
         </div>
       </div>
     </div>
