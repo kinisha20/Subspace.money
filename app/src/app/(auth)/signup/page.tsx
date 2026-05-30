@@ -1,10 +1,5 @@
-import type { Metadata } from "next";
+"use client";
 import Link from "next/link";
-
-export const metadata: Metadata = {
-  title: "Get Started",
-  description: "Create your Subspace.money account and take control of your finances.",
-};
 
 export default function SignupPage() {
   return (
